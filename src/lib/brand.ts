@@ -8,8 +8,8 @@
 
 export const BRAND = {
   name:     "Kora",
-  tagline:  "O WhatsApp que vende e atende com IA",
-  subline:  "Sem perder o toque humano.",
+  tagline:  "Centralize a operação do seu WhatsApp pra toda empresa, e venda mais",
+  subline:  "Atendimento, vendas e gestão num só lugar.",
   domain:   "kora.bluedigitalhub.com.br",
 
   // CTA principal — link do WhatsApp comercial
