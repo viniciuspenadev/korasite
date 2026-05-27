@@ -10,7 +10,7 @@ export const BRAND = {
   name:     "Kora",
   tagline:  "O WhatsApp que vende e atende com IA",
   subline:  "Sem perder o toque humano.",
-  domain:   "kora.com.br",
+  domain:   "kora.bluedigitalhub.com.br",
 
   // CTA principal — link do WhatsApp comercial
   whatsappNumber: "5511987253394", // +55 11 98725-3394
@@ -20,6 +20,10 @@ export const BRAND = {
   // Social
   instagram: "https://instagram.com/usekora",
   linkedin:  "https://linkedin.com/company/kora",
+
+  // Entidade legal / contato
+  legalEntity: "BlueDigitalHub",
+  legalEmail:  "contato@bluedigitalhub.com.br",
 
   // Logos (em /public)
   logo:       "/logo_kora.png",        // wordmark azul (sobre fundo claro)
