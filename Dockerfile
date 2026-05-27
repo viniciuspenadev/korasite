@@ -17,8 +17,9 @@ WORKDIR /app
 # Copia manifests primeiro pra aproveitar cache de layer quando só código muda
 COPY package.json package-lock.json* ./
 
-# npm ci é mais rápido e determinístico que npm install em CI/Docker
-RUN npm ci --no-audit --no-fund
+# npm install em vez de npm ci — lock gerado no Windows não inclui
+# deps opcionais Linux-only (ex: @emnapi/runtime via lightningcss)
+RUN npm install --no-audit --no-fund
 
 # Copia o resto do código e builda o site estático em /app/dist
 COPY . .
