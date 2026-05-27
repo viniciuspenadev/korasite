@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────────
+   Kora — Design tokens
+   Tom: próximo, humano, confiante. Inspiração: Cal.com + Linear.
+   Cor primária: azul Kora #004add (mesmo do app).
+   Verde aparece SÓ como acento semântico (sucesso/positivo).
+─────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Fontes */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+
+  /* Brand — azul Kora (alinhado com o app) */
+  --color-primary-50:  #eef2ff;
+  --color-primary-100: #dbe4ff;
+  --color-primary-200: #b7c8ff;
+  --color-primary-300: #92acff;
+  --color-primary-400: #5e85ff;
+  --color-primary-500: #1a5bff;
+  --color-primary-600: #004add;  /* CTA principal, mesmo do app */
+  --color-primary-700: #003db8;
+  --color-primary-800: #002f8a;
+  --color-primary-900: #00257a;
+  --color-primary-950: #001548;  /* navy profundo — fundo de "momento dramático" */
+
+  /* Verde semântico (sucesso, métricas positivas, online) */
+  --color-success-50:  #ecfdf5;
+  --color-success-500: #10b981;
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+
+  /* Animações */
+  --animate-fade-up: fadeUp 0.6s ease-out both;
+  --animate-fade-in: fadeIn 0.5s ease-out both;
+  --animate-pulse-soft: pulseSoft 2s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+/* Marquee infinito — scroll horizontal contínuo */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Cursor flutuando sobre item — bounce sutil */
+@keyframes cursorBounce {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(2px, 4px); }
+}
+
+/* Card "aterrissando" na coluna ganho (com pulse no destaque) */
+@keyframes cardLand {
+  0%   { transform: translateY(-8px) scale(0.96); opacity: 0; }
+  60%  { transform: translateY(2px)  scale(1.02); opacity: 1; }
+  100% { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+/* Sparkle suave (rotação + opacidade) — pra IA "pensando/respondendo" */
+@keyframes sparkle {
+  0%, 100% { transform: scale(1)   rotate(0);   opacity: 0.6; }
+  50%      { transform: scale(1.3) rotate(180deg); opacity: 1; }
+}
+
+/* Confetti emergindo do card vencedor */
+@keyframes confetti {
+  0%   { transform: translateY(0) scale(0);   opacity: 0; }
+  20%  { transform: translateY(-4px) scale(1); opacity: 1; }
+  100% { transform: translateY(-20px) scale(0.6); opacity: 0; }
+}
+
+/* Máscara de fade nas extremidades do marquee */
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+/* Scroll reveal — elementos com [data-reveal] aparecem quando entram no viewport */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(48px);
+  transition:
+    opacity   0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cinema scroll: cada [data-cena] ocupa 100vh.
+   Cena 1 sempre visível (âncora). Cenas 2+ começam escondidas em baixo:
+   entram com fade+scale crescendo, saem subindo+escala diminuindo (sensação
+   de profundidade — como passar por capítulos numa galeria).
+   O script no Story.astro interpola os valores conforme o scroll. */
+[data-cena] {
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Toda cena que tem outra cena ANTES dela (ou seja, não é a 1ª) começa escondida */
+  [data-cena] ~ [data-cena] {
+    opacity: 0;
+    transform: translateY(60px) scale(0.92);
+  }
+}
+
+/* Drag float — card sendo arrastado no kanban (cena 3 do Story).
+   Bounce sutil + tilt pra comunicar "movimento, ação". */
+@keyframes dragFloat {
+  0%, 100% { transform: rotate(2deg)   translateY(0);  }
+  50%      { transform: rotate(3deg)   translateY(-4px); }
+}
+
+/* Rotating word no H1 do hero — slide-up loop entre 4 palavras + 1
+   duplicada da 1ª no fim pra o loop voltar suave (snap invisível).
+   Cycle 12s: cada palavra fica visível ~2.2s, transição ~0.5s. */
+@keyframes rotateText {
+  0%, 18%   { transform: translateY(0); }
+  22%, 40%  { transform: translateY(-1.02em); }
+  44%, 62%  { transform: translateY(-2.04em); }
+  66%, 84%  { transform: translateY(-3.06em); }
+  88%, 100% { transform: translateY(-4.08em); }
+}
+
+.rotate-track {
+  animation: rotateText 12s cubic-bezier(0.83, 0, 0.17, 1) infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotate-track { animation: none !important; transform: none !important; }
+}
+
+/* Siri-style orb (hero phone): blobs drifting atrás do iPhone com cores
+   da marca. Puro CSS via transform — GPU-accelerated, zero JS, zero scroll
+   handler. 3 blobs com durações diferentes (14s / 18s / 22s) pra movimento
+   orgânico que não sincroniza em loop visível. */
+@keyframes siriDrift1 {
+  0%, 100% { transform: translate3d(0, 0, 0)        scale(1); }
+  33%      { transform: translate3d(55px, -40px, 0) scale(1.18); }
+  66%      { transform: translate3d(-45px, 50px, 0) scale(0.9); }
+}
+@keyframes siriDrift2 {
+  0%, 100% { transform: translate3d(0, 0, 0)         scale(1); }
+  33%      { transform: translate3d(-60px, 30px, 0)  scale(1.12); }
+  66%      { transform: translate3d(40px, -50px, 0)  scale(0.94); }
+}
+@keyframes siriDrift3 {
+  0%, 100% { transform: translate3d(0, 0, 0)         scale(1); }
+  33%      { transform: translate3d(45px, 50px, 0)   scale(1.08); }
+  66%      { transform: translate3d(-35px, -40px, 0) scale(0.88); }
+}
+
+.siri-blob {
+  will-change: transform;
+  backface-visibility: hidden;       /* força GPU layer */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .siri-blob { animation: none !important; transform: none !important; }
+}
+
+/* Conversation cycler (Hero phone): mensagens só animam quando o pai
+   tem [data-active]. Trocar de conv remove e re-adiciona data-active,
+   forçando o stagger das mensagens novas. */
+[data-msg] {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+[data-conv][data-active] [data-msg] {
+  animation: msgIn 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) var(--delay, 0s) both;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Acessibilidade: respeita usuário que pediu menos animação */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  [data-cena] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-msg] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* Base reset + smoothing */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  /* Defensivo: impede que mockups absolutos (cursor, tooltips, blob orb) gerem
+     scroll horizontal involuntário no mobile. Cada section já tem overflow-hidden,
+     mas isso garante que NADA estoure o viewport. */
+  overflow-x: hidden;
+}
+
+/* Focus visible refinado — azul Kora */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Seleção de texto na cor da marca */
+::selection {
+  background: var(--color-primary-100);
+  color: var(--color-primary-900);
+}

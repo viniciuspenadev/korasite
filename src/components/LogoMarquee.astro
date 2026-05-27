@@ -1,0 +1,47 @@
+---
+/**
+ * Marquee de empresas — scroll horizontal infinito direita → esquerda.
+ * Lista duplicada inline pra loop seamless. Mask gradient nas pontas
+ * faz os nomes aparecerem/desaparecerem suavemente.
+ *
+ * TODO: trocar `companies` por logos reais (SVG) quando tiver. Por enquanto
+ * usa wordmarks em texto pra placeholder visualmente honesto.
+ */
+
+const companies: string[] = [
+  "Funchal Pescados",
+  "BluEduca",
+  "Grupo Bernardo",
+  "Bernardo Concept",
+  "Panobianco",
+  "Suform SSM",
+]
+---
+
+<section class="relative bg-white py-14 border-y border-slate-100 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 text-center mb-8">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+      Empresas que acreditam no Kora
+    </p>
+  </div>
+
+  <!-- Track: lista duplicada (companies + companies) pra loop seamless -->
+  <div class="marquee-mask">
+    <div
+      class="flex items-center gap-14 w-max"
+      style="animation: marquee 35s linear infinite;"
+    >
+      {companies.map((c) => (
+        <span class="text-xl font-bold text-slate-400 whitespace-nowrap tracking-tight select-none">
+          {c}
+        </span>
+      ))}
+      <!-- Cópia idêntica pra continuar o loop sem corte -->
+      {companies.map((c) => (
+        <span class="text-xl font-bold text-slate-400 whitespace-nowrap tracking-tight select-none" aria-hidden="true">
+          {c}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>

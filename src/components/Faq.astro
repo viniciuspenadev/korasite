@@ -1,0 +1,73 @@
+---
+/**
+ * FAQ — perguntas reais que o ICP (dono de PME) faz antes de comprar.
+ * Usa <details>/<summary> nativos: zero JS, acessível, animação CSS.
+ */
+
+const questions = [
+  {
+    q: "Vou perder meu número atual de WhatsApp?",
+    a: "Não. Você mantém seu WhatsApp Business com o mesmo número e histórico. Quando o time crescer e fizer sentido migrar pra API oficial do WhatsApp, a gente faz a transição sem perder contato.",
+  },
+  {
+    q: "Quanto custa?",
+    a: "Plano único transparente: você paga por atendente ativo (R$ X por usuário/mês). Sem fidelidade. Cancela quando quiser. O preço escala com seu time, não com o tamanho da sua empresa.",
+  },
+  {
+    q: "Preciso saber programar pra usar?",
+    a: "Não. Tudo é configurado pela interface: IA, fluxo de atendimento, kanban, rastreamento de anúncios. Setup inicial leva 1 dia em média; a gente acompanha de perto no começo.",
+  },
+  {
+    q: "A IA realmente responde bem?",
+    a: "Sim, quando treinada certo. No setup inicial, ajudamos você a alimentar a IA com perguntas frequentes, catálogo, política de atendimento e tom de voz da marca. Você define os limites do que ela responde sozinha e quando passa pro humano.",
+  },
+  {
+    q: "Meus dados ficam seguros?",
+    a: "Sim. Servidor no Brasil, LGPD por padrão, criptografia end-to-end no WhatsApp (vinda do próprio Meta). Você é dono dos seus dados; exporta tudo a qualquer momento, em formato aberto. Sem vendor lock-in.",
+  },
+  {
+    q: "E se eu já uso outra ferramenta de atendimento?",
+    a: "Cada ferramenta tem regras diferentes pra exportar contatos e histórico. A gente analisa o seu caso específico, vê o que dá pra trazer (contatos, mensagens recentes, base de conhecimento), monta um plano de transição contigo e acompanha o processo. Sem custo durante a mudança.",
+  },
+  {
+    q: "Em quanto tempo eu começo a ver resultado?",
+    a: "Atendimento mais rápido: dia 1. IA respondendo automaticamente: semana 1. ROI mensurável (mais leads convertendo em venda): mês 1. Não é mágica; é processo bem feito.",
+  },
+] as const
+---
+
+<section id="faq" class="relative bg-white py-24 lg:py-32 border-t border-slate-100">
+  <div class="max-w-3xl mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary-600 mb-4">
+        Dúvidas
+      </p>
+      <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+        Perguntas honestas,<br />respostas diretas.
+      </h2>
+    </div>
+
+    <div class="space-y-3">
+      {questions.map((item) => (
+        <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden transition-all open:border-primary-200 open:shadow-md open:shadow-primary-600/5">
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-4 px-5 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-base font-semibold text-slate-900 leading-snug">{item.q}</span>
+            <span class="size-7 rounded-full bg-slate-100 text-slate-600 group-open:bg-primary-100 group-open:text-primary-700 flex items-center justify-center shrink-0 transition-all group-open:rotate-180">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="px-5 pb-5 pt-1 text-slate-600 leading-relaxed">
+            {item.a}
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <p class="text-center text-sm text-slate-500 mt-10">
+      Outra dúvida? <a href="#cta-final" class="text-primary-700 font-semibold underline-offset-4 hover:underline">Pergunta direto no WhatsApp</a>.
+    </p>
+  </div>
+</section>

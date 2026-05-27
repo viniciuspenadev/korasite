@@ -1,0 +1,44 @@
+---
+/**
+ * Faixa discreta de prova social entre o hero e o Story.
+ * Padrão Linear/Cal.com: eyebrow pequeno + uma pull-quote forte + attribution.
+ * Placeholders honestos — preencher com clientes reais antes do launch.
+ */
+
+interface Quote {
+  text:    string
+  name:    string
+  role:    string
+  company: string
+}
+
+// TODO: trocar pelo depoimento real do Vinicius/Bernardo Concept.
+const quote: Quote = {
+  text:    "Antes da Kora a gente perdia lead toda hora porque ninguém respondia. Hoje a IA atende em 12 segundos, qualifica, e meu time só pega o que está quente.",
+  name:    "[Nome do cliente]",
+  role:    "Sócio",
+  company: "Bernardo Concept",
+}
+---
+
+<section class="relative bg-white py-20 lg:py-28 border-t border-slate-100">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 mb-6">
+      Confiam na Kora
+    </p>
+
+    <blockquote class="text-2xl sm:text-3xl lg:text-4xl text-slate-900 leading-snug font-medium tracking-tight">
+      <span class="text-primary-600">“</span>{quote.text}<span class="text-primary-600">”</span>
+    </blockquote>
+
+    <figcaption class="mt-8 flex items-center justify-center gap-3 text-sm">
+      <div class="size-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
+        {quote.name[1]?.toUpperCase() ?? "K"}
+      </div>
+      <div class="text-left">
+        <p class="font-semibold text-slate-900">{quote.name}</p>
+        <p class="text-slate-500 text-xs">{quote.role} · {quote.company}</p>
+      </div>
+    </figcaption>
+  </div>
+</section>

@@ -1,0 +1,370 @@
+---
+import { waLink } from "@/lib/brand"
+
+/**
+ * Hero do site Kora.
+ *
+ * Phone mockup com 3 conversas que ciclam a cada 8s, mostrando o produto
+ * atendendo diferentes segmentos (varejo, clínica estética, imobiliária).
+ *
+ * - Header WhatsApp tem avatar + nome dinâmicos (atualizados via JS).
+ * - Cada [data-conv] container empilha por absolute; só o [data-active] é
+ *   visível. CSS no global.css faz cada [data-msg] entrar com stagger
+ *   via --delay var.
+ */
+
+type Side = "in" | "out"
+
+interface Msg {
+  side:      Side
+  text?:     string
+  who?:      string                       // badge "Atendente IA" ou nome humano
+  whoIcon?:  "bot" | "person"
+  whoColor?: string                       // tailwind text-color class pro badge
+  image?:    { emoji: string; bg: string }
+  time:      string
+  delay:     number                       // segundos no stagger
+}
+
+interface Conv {
+  business: string
+  initial:  string
+  color:    string
+  messages: Msg[]
+}
+
+const CONVERSATIONS: Conv[] = [
+  {
+    business: "Loja Bella · Moda",
+    initial:  "B",
+    color:    "#ec4899",
+    messages: [
+      { side: "in",  text: "Oi! Vocês ainda têm em estoque o vestido floral?", time: "14:22", delay: 0.5 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Oi! Temos sim, nos tamanhos P, M e G. Te mando foto?", time: "14:22", delay: 0.9 },
+      { side: "out", image: { emoji: "👗", bg: "from-rose-200 to-rose-300" }, time: "14:23", delay: 1.3 },
+      { side: "in",  text: "Lindo! Quero o tamanho M ❤️", time: "14:24", delay: 1.7 },
+      { side: "out", who: "Marina · vendedora", whoIcon: "person", whoColor: "text-violet-700",
+        text: "Oi linda! Já separei aqui. Posso passar o pix?", time: "14:24", delay: 2.1 },
+    ],
+  },
+  {
+    business: "Clínica Vita · Estética",
+    initial:  "V",
+    color:    "#a855f7",
+    messages: [
+      { side: "in",  text: "Olá, queria agendar uma limpeza de pele.", time: "10:15", delay: 0.5 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Oi! Posso te ajudar 💆‍♀️ Quando seria melhor pra você?", time: "10:15", delay: 0.9 },
+      { side: "in",  text: "Sexta à tarde dá?", time: "10:16", delay: 1.3 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Tenho 14h ✨ ou 16h. Qual prefere?", time: "10:16", delay: 1.7 },
+      { side: "in",  text: "16h tá ótimo!", time: "10:17", delay: 2.1 },
+      { side: "out", who: "Dra. Patrícia", whoIcon: "person", whoColor: "text-violet-700",
+        text: "Anotei! Te espero sexta às 16h 🌸", time: "10:17", delay: 2.5 },
+    ],
+  },
+  {
+    business: "Imob Vista · Imóveis",
+    initial:  "I",
+    color:    "#f97316",
+    messages: [
+      { side: "in",  text: "Boa tarde! Vi o anúncio do apto 2qts em Pinheiros.", time: "16:42", delay: 0.5 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Boa tarde! 🏠 Disponível: R$ 4.200/mês, mobiliado.", time: "16:42", delay: 0.9 },
+      { side: "in",  text: "Faz vista pra rua?", time: "16:43", delay: 1.3 },
+      { side: "out", image: { emoji: "🏙️", bg: "from-sky-200 to-sky-300" }, time: "16:43", delay: 1.7 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Vista frontal, claríssimo. Quando pode visitar?", time: "16:43", delay: 2.1 },
+      { side: "out", who: "Carlos · corretor", whoIcon: "person", whoColor: "text-violet-700",
+        text: "Aqui é o Carlos 👋 Te confirmo amanhã às 15h?", time: "16:44", delay: 2.5 },
+    ],
+  },
+]
+
+// Dados leves pro script client-side (sem mensagens)
+const HEADER_DATA = CONVERSATIONS.map((c) => ({
+  business: c.business,
+  initial:  c.initial,
+  color:    c.color,
+}))
+
+const FIRST = CONVERSATIONS[0]
+---
+
+<section class="relative overflow-hidden bg-white pt-32 pb-24 lg:pt-40 lg:pb-32">
+  <!-- Decorativo: gradient blob suave no fundo (azul Kora) -->
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <div class="absolute top-20 -left-32 w-96 h-96 bg-primary-100 rounded-full blur-3xl opacity-70"></div>
+    <div class="absolute top-40 right-0 w-[32rem] h-[32rem] bg-primary-50 rounded-full blur-3xl opacity-90"></div>
+    <div
+      class="absolute inset-0 opacity-[0.025]"
+      style="background-image: linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px); background-size: 64px 64px;"
+    ></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+    <!-- Coluna esquerda: copy + CTA -->
+    <div class="animate-[fadeUp_0.6s_ease-out_both]">
+      <span class="inline-flex items-center gap-2 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-full px-3 py-1.5 mb-7 shadow-sm">
+        <span class="relative flex size-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full size-2 bg-emerald-500"></span>
+        </span>
+        Atendendo PMEs brasileiras agora
+      </span>
+
+      <h1 class="text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-slate-900 tracking-tight leading-[1.02]">
+        O WhatsApp<br />
+        que vende e atende<br />
+        <!-- Rotating word: 4 palavras + 1 duplicada da 1ª pro loop seamless.
+             O outer span clipa via overflow-hidden; o inner faz slide-up via CSS keyframe. -->
+        <span class="relative inline-block overflow-hidden align-bottom" style="height: 1.02em;">
+          <span class="rotate-track block bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">
+            <span class="block whitespace-nowrap" style="height: 1.02em; line-height: 1.02;">com IA.</span>
+            <span class="block whitespace-nowrap" style="height: 1.02em; line-height: 1.02;">como um time.</span>
+            <span class="block whitespace-nowrap" style="height: 1.02em; line-height: 1.02;">sem perder lead.</span>
+            <span class="block whitespace-nowrap" style="height: 1.02em; line-height: 1.02;">do início ao fim.</span>
+            <span class="block whitespace-nowrap" style="height: 1.02em; line-height: 1.02;">com IA.</span>
+          </span>
+        </span>
+      </h1>
+
+      <p class="text-lg lg:text-xl text-slate-600 mt-7 max-w-xl leading-relaxed">
+        Sem perder o toque humano. Centralize conversas, automatize com inteligência
+        e feche mais vendas pelo número da sua empresa.
+      </p>
+
+      <div class="mt-10 flex items-center gap-5 flex-wrap">
+        <a
+          href={waLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-7 py-4 rounded-full text-base transition-all shadow-lg shadow-primary-600/25 hover:shadow-xl hover:shadow-primary-600/35 hover:-translate-y-0.5"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Falar no WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-0.5">
+            <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#produto" class="text-slate-700 hover:text-slate-900 text-sm font-semibold inline-flex items-center gap-1.5 group">
+          Ver como funciona
+          <span class="transition-transform group-hover:translate-y-0.5">↓</span>
+        </a>
+      </div>
+
+      <p class="mt-8 text-xs text-slate-500">
+        Sem cartão. Resposta em minutos no horário comercial.
+      </p>
+    </div>
+
+    <!-- Coluna direita: iPhone realista com 3 conversas cyclical -->
+    <div class="relative animate-[fadeUp_0.8s_ease-out_0.15s_both]">
+      <div class="relative mx-auto" style="max-width: 320px;">
+
+        <!-- Siri-style orb: blobs azul Kora animados ATRÁS do phone.
+             Puro CSS (transform + blur), GPU-accelerated, zero JS.
+             -inset-24 estende o container 96px pra todos os lados pros
+             blobs vazarem atrás do phone. pointer-events-none não interfere. -->
+        <div class="absolute -inset-24 pointer-events-none overflow-visible" aria-hidden="true">
+          <div
+            class="siri-blob absolute size-72 rounded-full"
+            style="top: 4%; left: -8%; background: #004add; filter: blur(70px); opacity: 0.55; animation: siriDrift1 14s ease-in-out infinite;"
+          ></div>
+          <div
+            class="siri-blob absolute size-64 rounded-full"
+            style="top: 32%; right: -12%; background: #5e85ff; filter: blur(65px); opacity: 0.6; animation: siriDrift2 18s ease-in-out infinite;"
+          ></div>
+          <div
+            class="siri-blob absolute size-72 rounded-full"
+            style="bottom: 2%; left: 18%; background: #a78bfa; filter: blur(80px); opacity: 0.45; animation: siriDrift3 22s ease-in-out infinite;"
+          ></div>
+        </div>
+
+        <!-- Botões laterais -->
+        <div class="absolute -left-[2px] top-[78px]  w-[3px] h-7  bg-slate-700 rounded-l-sm shadow-inner z-10"></div>
+        <div class="absolute -left-[2px] top-[130px] w-[3px] h-12 bg-slate-700 rounded-l-sm shadow-inner z-10"></div>
+        <div class="absolute -left-[2px] top-[185px] w-[3px] h-12 bg-slate-700 rounded-l-sm shadow-inner z-10"></div>
+        <div class="absolute -right-[2px] top-[125px] w-[3px] h-20 bg-slate-700 rounded-r-sm shadow-inner z-10"></div>
+
+        <!-- Frame externo titânio -->
+        <div class="relative bg-gradient-to-br from-slate-700 via-slate-800 to-slate-950 rounded-[2.75rem] p-[3px] shadow-[0_30px_70px_-15px_rgba(15,23,42,0.45)]">
+
+          <!-- Bezel preto -->
+          <div class="relative bg-slate-950 rounded-[2.6rem] p-[7px]">
+
+            <!-- Tela -->
+            <div class="relative bg-[#E5DDD5] rounded-[2.15rem] overflow-hidden" style="aspect-ratio: 9 / 19.5;">
+
+              <!-- WhatsApp chrome verde (avatar + nome dinâmicos via JS) -->
+              <div class="absolute top-0 inset-x-0 z-10" style="height: 92px;">
+                <div class="absolute inset-0 bg-[#075E54]"></div>
+                <div class="absolute bottom-0 inset-x-0 px-3 pb-2.5 flex items-center gap-2.5 text-white">
+                  <svg width="11" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="opacity-90">
+                    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <!-- Avatar dinâmico (atualizado pelo script) -->
+                  <div
+                    id="hero-conv-avatar"
+                    class="size-8 rounded-full shrink-0 flex items-center justify-center font-bold text-xs text-white transition-colors duration-300"
+                    style={`background: ${FIRST.color};`}
+                  >{FIRST.initial}</div>
+                  <div class="flex-1 min-w-0">
+                    <!-- Nome dinâmico (atualizado pelo script) -->
+                    <p id="hero-conv-name" class="text-[13px] font-semibold truncate leading-tight">{FIRST.business}</p>
+                    <p class="text-[10px] opacity-80 leading-tight mt-0.5">online</p>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="opacity-85"><path d="M20 4h-3.17l-1.84-2H9.01L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5Z"/></svg>
+                  <svg width="3" height="14" viewBox="0 0 4 16" fill="currentColor" class="opacity-85"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg>
+                </div>
+              </div>
+
+              <!-- Dynamic Island -->
+              <div class="absolute top-[7px] left-1/2 -translate-x-1/2 z-30 bg-black rounded-full" style="width: 95px; height: 26px;"></div>
+
+              <!-- Status bar (sobre o chrome verde) -->
+              <div class="absolute top-0 inset-x-0 z-20 flex items-center justify-between text-white text-[12px] font-semibold pointer-events-none" style="height: 36px; padding: 12px 22px 0;">
+                <span class="tabular-nums">14:22</span>
+                <div class="flex items-center gap-[5px]">
+                  <svg width="17" height="10" viewBox="0 0 17 10" fill="currentColor" aria-hidden="true">
+                    <rect x="0"   y="6" width="3" height="4"  rx="0.5"/>
+                    <rect x="4.5" y="4" width="3" height="6"  rx="0.5"/>
+                    <rect x="9"   y="2" width="3" height="8"  rx="0.5"/>
+                    <rect x="13.5" y="0" width="3" height="10" rx="0.5"/>
+                  </svg>
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" aria-hidden="true">
+                    <path d="M7.5 11l-2-2a2.83 2.83 0 0 1 4 0l-2 2z"/>
+                    <path d="M3.5 7l1.4 1.4a3.7 3.7 0 0 1 5.2 0L11.5 7c-2.2-2.2-5.8-2.2-8 0z" opacity="0.95"/>
+                    <path d="M0.5 4l1.4 1.4a8 8 0 0 1 11.2 0L14.5 4c-3.9-3.9-10.1-3.9-14 0z" opacity="0.9"/>
+                  </svg>
+                  <svg width="25" height="11" viewBox="0 0 25 11" fill="none" aria-hidden="true">
+                    <rect x="0.5" y="0.5" width="21" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.6"/>
+                    <rect x="2" y="2" width="16" height="7" rx="1" fill="currentColor"/>
+                    <rect x="22.5" y="3.5" width="1.5" height="4" rx="0.6" fill="currentColor" opacity="0.7"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Conversas cyclical (3 containers empilhados; só [data-active] visível) -->
+              {CONVERSATIONS.map((conv, ci) => (
+                <div
+                  data-conv
+                  data-active={ci === 0 ? "" : null}
+                  class="absolute inset-x-0 bottom-[18px] px-2.5 py-3 space-y-2 overflow-hidden transition-opacity duration-500"
+                  style={`top: 92px; opacity: ${ci === 0 ? 1 : 0};`}
+                >
+                  {conv.messages.map((msg) => (
+                    msg.image ? (
+                      <div class={`flex ${msg.side === "in" ? "justify-start" : "justify-end"}`} data-msg style={`--delay: ${msg.delay}s`}>
+                        <div class={`max-w-[78%] ${msg.side === "in" ? "bg-white rounded-tl-sm" : "bg-[#DCF8C6] rounded-tr-sm"} rounded-lg p-1 shadow-sm`}>
+                          <div class={`aspect-square w-28 bg-gradient-to-br ${msg.image.bg} rounded flex items-center justify-center`}>
+                            <span class="text-2xl">{msg.image.emoji}</span>
+                          </div>
+                          <p class="text-[9px] text-slate-400 text-right mt-0.5 pr-1">{msg.time} ✓✓</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div class={`flex ${msg.side === "in" ? "justify-start" : "justify-end"}`} data-msg style={`--delay: ${msg.delay}s`}>
+                        <div class={`${msg.side === "in" ? "max-w-[75%] bg-white rounded-tl-sm" : "max-w-[80%] bg-[#DCF8C6] rounded-tr-sm"} rounded-lg px-2.5 py-1.5 shadow-sm`}>
+                          {msg.who && (
+                            <p class={`text-[9px] font-semibold ${msg.whoColor} mb-0.5 flex items-center gap-1`}>
+                              {msg.whoIcon === "bot" ? (
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Zm-3 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+                              ) : (
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>
+                              )}
+                              {msg.who}
+                            </p>
+                          )}
+                          <p class="text-[12px] text-slate-800 leading-snug">{msg.text}</p>
+                          <p class="text-[9px] text-slate-400 text-right mt-0.5">{msg.time}{msg.side === "out" ? " ✓✓" : ""}</p>
+                        </div>
+                      </div>
+                    )
+                  ))}
+
+                  <!-- Typing indicator no final de cada conv (delay = última msg + 0.4s) -->
+                  <div class="flex justify-start" data-msg style={`--delay: ${conv.messages[conv.messages.length - 1].delay + 0.4}s`}>
+                    <div class="bg-white rounded-lg rounded-tl-sm px-2.5 py-2 shadow-sm">
+                      <div class="flex items-center gap-1">
+                        <span class="size-1.5 bg-slate-400 rounded-full animate-[pulseSoft_1s_ease-in-out_infinite]"></span>
+                        <span class="size-1.5 bg-slate-400 rounded-full animate-[pulseSoft_1s_ease-in-out_0.2s_infinite]"></span>
+                        <span class="size-1.5 bg-slate-400 rounded-full animate-[pulseSoft_1s_ease-in-out_0.4s_infinite]"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <!-- Home indicator -->
+              <div class="absolute bottom-[6px] left-1/2 -translate-x-1/2 w-[110px] h-[4px] bg-slate-900/70 rounded-full z-40"></div>
+
+              <!-- Reflexo sutil -->
+              <div class="absolute inset-0 pointer-events-none z-50 rounded-[2.15rem] bg-gradient-to-br from-white/[0.04] via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges flutuantes — fora do phone via right-full / left-full (verde = melhoria) -->
+        <div class="absolute right-full top-1/4 mr-3 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 animate-[fadeUp_0.6s_ease-out_1.5s_both] hidden xl:block">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Tempo de resposta</p>
+          <p class="text-2xl font-bold text-slate-900 tabular-nums">12<span class="text-sm font-medium text-slate-500">s</span></p>
+          <p class="text-[10px] text-emerald-600 font-medium mt-0.5">↓ 87% vs antes</p>
+        </div>
+
+        <div class="absolute left-full bottom-1/4 ml-3 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 animate-[fadeUp_0.6s_ease-out_1.8s_both] hidden xl:block">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Conversão</p>
+          <p class="text-2xl font-bold text-slate-900 tabular-nums">34<span class="text-sm font-medium text-slate-500">%</span></p>
+          <p class="text-[10px] text-emerald-600 font-medium mt-0.5">↑ 2,1× a média</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ HEADER_DATA }}>
+  // Cycle conversations a cada 8s.
+  // Fade-out (400ms) → swap data-active + atualiza header → fade-in.
+  // Toggle data-active força CSS [data-msg] a re-stagger via animation reset.
+  const convElements = Array.from(document.querySelectorAll("[data-conv]"))
+  const avatarEl    = document.getElementById("hero-conv-avatar")
+  const nameEl      = document.getElementById("hero-conv-name")
+
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+  if (convElements.length > 1 && avatarEl && nameEl && !prefersReducedMotion) {
+    let current = 0
+
+    function cycleNext() {
+      const currentEl = convElements[current]
+      const nextIndex = (current + 1) % HEADER_DATA.length
+      const nextEl    = convElements[nextIndex]
+
+      // Fade out conv atual
+      currentEl.style.opacity = "0"
+
+      window.setTimeout(() => {
+        currentEl.removeAttribute("data-active")
+
+        // Atualiza header
+        const data = HEADER_DATA[nextIndex]
+        avatarEl.style.background = data.color
+        avatarEl.textContent      = data.initial
+        nameEl.textContent        = data.business
+
+        // Ativa próxima — msgs re-staggerão via CSS [data-active]
+        nextEl.setAttribute("data-active", "")
+        nextEl.style.opacity = "1"
+
+        current = nextIndex
+      }, 400)
+    }
+
+    window.setInterval(cycleNext, 8000)
+  }
+</script>
