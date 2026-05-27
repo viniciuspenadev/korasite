@@ -1,8 +1,8 @@
 ---
 /**
- * Faixa discreta de prova social entre o hero e o Story.
- * Padrão Linear/Cal.com: eyebrow pequeno + uma pull-quote forte + attribution.
- * Placeholders honestos — preencher com clientes reais antes do launch.
+ * Faixa de prova social entre o hero e o Story.
+ * Carrossel de 3 depoimentos com auto-play a cada 6s.
+ * Transição suave (fade + slide) + indicadores clicáveis.
  */
 
 interface Quote {
@@ -10,15 +10,36 @@ interface Quote {
   name:    string
   role:    string
   company: string
+  initial: string
+  color:   string       // gradient CSS pro avatar
 }
 
-// TODO: trocar pelo depoimento real do Vinicius/Bernardo Concept.
-const quote: Quote = {
-  text:    "Antes da Kora a gente perdia lead toda hora porque ninguém respondia. Hoje a IA atende em 12 segundos, qualifica, e meu time só pega o que está quente.",
-  name:    "[Nome do cliente]",
-  role:    "Sócio",
-  company: "Bernardo Concept",
-}
+const quotes: Quote[] = [
+  {
+    text:    "Sem a Kora, a gente não tinha visibilidade nenhuma dos atendimentos e perdia leads por falta de gestão. Hoje temos tudo centralizado, sabemos exatamente o que cada cliente precisa e atendemos com muito mais agilidade.",
+    name:    "Luis Otavio",
+    role:    "Sócio",
+    company: "Bernardo Concept",
+    initial: "L",
+    color:   "from-primary-500 to-primary-700",
+  },
+  {
+    text:    "A gente vende pescado pra toda a Grande São Paulo pelo WhatsApp e era uma loucura controlar tudo. Com a Kora, cada vendedor tem suas conversas organizadas, não perde pedido e a gente consegue acompanhar tudo em tempo real.",
+    name:    "Jorge Petito",
+    role:    "Diretor Financeiro",
+    company: "Funchal Pescados",
+    initial: "J",
+    color:   "from-cyan-500 to-blue-600",
+  },
+  {
+    text:    "Numa franquia, atendimento rápido é tudo. A Kora trouxe uma organização que a gente não tinha. Agora cada pessoa interessada é acompanhada do primeiro contato até fechar o plano, sem deixar ninguém pra trás.",
+    name:    "Carolina Gomes",
+    role:    "Gerente da Franquia Bela Vista",
+    company: "Panobianco",
+    initial: "C",
+    color:   "from-rose-500 to-pink-600",
+  },
+]
 ---
 
 <section class="relative bg-white py-20 lg:py-28 border-t border-slate-100">
@@ -27,18 +48,87 @@ const quote: Quote = {
       Confiam na Kora
     </p>
 
-    <blockquote class="text-2xl sm:text-3xl lg:text-4xl text-slate-900 leading-snug font-medium tracking-tight">
-      <span class="text-primary-600">“</span>{quote.text}<span class="text-primary-600">”</span>
-    </blockquote>
+    <!-- Carrossel de depoimentos -->
+    <div class="relative" id="social-proof-carousel">
+      {quotes.map((q, i) => (
+        <div
+          class={`social-proof-slide transition-all duration-500 ${i === 0 ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none"}`}
+          data-slide-index={i}
+        >
+          <blockquote class="text-2xl sm:text-3xl lg:text-4xl text-slate-900 leading-snug font-medium tracking-tight">
+            <span class="text-primary-600">&ldquo;</span>{q.text}<span class="text-primary-600">&rdquo;</span>
+          </blockquote>
 
-    <figcaption class="mt-8 flex items-center justify-center gap-3 text-sm">
-      <div class="size-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
-        {quote.name[1]?.toUpperCase() ?? "K"}
-      </div>
-      <div class="text-left">
-        <p class="font-semibold text-slate-900">{quote.name}</p>
-        <p class="text-slate-500 text-xs">{quote.role} · {quote.company}</p>
-      </div>
-    </figcaption>
+          <figcaption class="mt-8 text-sm">
+              <p class="font-semibold text-slate-900">{q.name}</p>
+              <p class="text-slate-500 text-xs">{q.role} · {q.company}</p>
+          </figcaption>
+        </div>
+      ))}
+    </div>
+
+    <!-- Indicadores -->
+    <div class="flex items-center justify-center gap-2 mt-10">
+      {quotes.map((_, i) => (
+        <button
+          class={`social-proof-dot size-2.5 rounded-full transition-all duration-300 ${i === 0 ? "bg-primary-600 w-7" : "bg-slate-300 hover:bg-slate-400"}`}
+          data-dot-index={i}
+          aria-label={`Depoimento ${i + 1}`}
+        />
+      ))}
+    </div>
   </div>
 </section>
+
+<script>
+  const carousel = document.getElementById("social-proof-carousel")
+  if (carousel) {
+    const slides = Array.from(carousel.querySelectorAll(".social-proof-slide"))
+    const dots   = Array.from(document.querySelectorAll(".social-proof-dot"))
+    let current  = 0
+    let timer: ReturnType<typeof setInterval>
+
+    function goTo(index: number) {
+      // Sai do slide atual
+      slides[current].classList.remove("opacity-100")
+      slides[current].classList.add("opacity-0", "pointer-events-none")
+
+      // Reseta dot atual
+      dots[current].classList.remove("bg-primary-600", "w-7")
+      dots[current].classList.add("bg-slate-300")
+
+      current = index
+
+      // Entra no novo slide
+      slides[current].classList.remove("opacity-0", "pointer-events-none", "absolute", "inset-0")
+      slides[current].classList.add("opacity-100")
+
+      // Ativa dot novo
+      dots[current].classList.remove("bg-slate-300")
+      dots[current].classList.add("bg-primary-600", "w-7")
+
+      // Esconde os outros (absolute pra não ocupar espaço)
+      slides.forEach((s, i) => {
+        if (i !== current) {
+          s.classList.add("absolute", "inset-0")
+        }
+      })
+    }
+
+    function next() {
+      goTo((current + 1) % slides.length)
+    }
+
+    // Clique nos dots
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        goTo(i)
+        clearInterval(timer)
+        timer = setInterval(next, 6000)
+      })
+    })
+
+    // Auto-play
+    timer = setInterval(next, 6000)
+  }
+</script>
