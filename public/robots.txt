@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kora.bluedigitalhub.com.br/sitemap-index.xml
+Sitemap: https://www.omnikora.com.br/sitemap-index.xml

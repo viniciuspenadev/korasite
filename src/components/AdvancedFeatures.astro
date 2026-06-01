@@ -1,0 +1,222 @@
+---
+/**
+ * AdvancedFeatures.astro
+ * Retorno à identidade visual antiga (Dark Mode Premium) com o conteúdo novo de 12 itens.
+ */
+
+const features = [
+  {
+    title: "Agendamento",
+    body: "Com o agendamento, você programa mensagens para o dia certo. Nunca mais esqueça datas importantes e mantenha o relacionamento em dia.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  },
+  {
+    title: "Kanban",
+    body: "O Kanban é uma metodologia de gestão visual. Ele usa cartões em colunas para representar tarefas. Ganhe eficiência e controle do trabalho.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>`,
+  },
+  {
+    title: "Atendimento Contínuo",
+    body: "Vários atendentes podem atuar na mesma conversa de forma totalmente invisível para o cliente. Uma experiência fluida, sem parecer que ele mudou de pessoa.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>`,
+  },
+  {
+    title: "API Externa",
+    body: "A API Externa conecta a plataforma a outros sistemas. Integre aplicativos, funcionalidades e dados de forma simples.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+  },
+  {
+    title: "Múltiplos Atendentes",
+    body: "Vários atendentes usam um único número, cada um com login e senha. Cada conversa fica separada. Chega de vários celulares.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  },
+  {
+    title: "Múltiplos Departamentos",
+    body: "Direcione cada atendimento para o assunto certo (Financeiro, Vendas ou Suporte). O fluxo de clientes fica totalmente organizado.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
+  },
+  {
+    title: "Mensagens Rápidas",
+    body: "Cadastre respostas prontas para as informações mais pedidas. Envie com um clique e ganhe agilidade no dia a dia.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  },
+  {
+    title: "Dashboard Intuitivo",
+    body: "Tenha uma visão 360º de todo o atendimento. Acompanhe o tempo médio e avaliações. Decida com base em dados reais.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  },
+  {
+    title: "Etiquetas Inteligentes (Tags)",
+    body: "As tags personalizadas organizam seus clientes e leads de forma simples. Use-as para disparar campanhas em massa.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+  },
+  {
+    title: "Transferências Ágeis",
+    body: "Transfira conversas entre os atendentes ou departamentos com apenas um clique. Garanta que o cliente fale com o especialista certo.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
+  },
+  {
+    title: "Importar e Exportar Contatos",
+    body: "Importe, exporte e crie listas em poucos cliques. Gerencie todos os seus contatos de forma eficiente e sem complicação.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+  },
+  {
+    title: "Integração com I.A",
+    body: "Agente virtual inteligente para argumentação, dúvidas e resolução de problemas, automatizando as conversas antes do atendimento humano.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2zm0 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/><path d="M22 12a10 10 0 0 0-10-10C6.5 2 2 6.5 2 12c0 5.5 4.5 10 10 10 5.5 0 10-4.5 10-10zM12 22v-5M12 7V2"/></svg>`,
+  },
+];
+---
+
+<section class="relative bg-primary-950 py-24 lg:py-32 overflow-hidden" id="features-old-identity">
+  <!-- Decorativo: blobs azul + grid sutil (da identidade antiga) -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute -top-32 -left-32 w-[36rem] h-[36rem] bg-primary-600 rounded-full blur-[120px] opacity-25"></div>
+    <div class="absolute -bottom-40 -right-20 w-[32rem] h-[32rem] bg-primary-500 rounded-full blur-[120px] opacity-20"></div>
+    <!-- grid lines -->
+    <div
+      class="absolute inset-0 opacity-[0.05]"
+      style="background-image: linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px); background-size: 64px 64px;"
+    ></div>
+    <!-- top fade pra suavizar borda com seção anterior -->
+    <div class="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-primary-950 to-transparent"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6">
+
+    <!-- Header com Título Antigo -->
+    <div data-reveal class="max-w-2xl mb-16 mx-auto text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary-300 mb-4">
+        Por que Kora
+      </p>
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.05]">
+        Kora não é um Bot.<br />
+        É a sua operação<br />
+        <span class="bg-gradient-to-r from-primary-200 to-primary-400 bg-clip-text text-transparent">
+          de WhatsApp inteira.
+        </span>
+      </h2>
+      <p class="text-lg text-slate-300 mt-6 leading-relaxed">
+        Cada decisão de produto da Kora resolve um problema real de quem vende e atende pelo WhatsApp todo dia.
+      </p>
+    </div>
+
+    <!-- Expanding Container -->
+    <div id="features-expand-container" class="relative overflow-hidden transition-[max-height] duration-700 ease-in-out" style="max-height: 480px;">
+      
+      <!-- Features Grid: 3 colunas para acomodar os 12 itens de forma bonita -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" data-reveal>
+        {features.map((f) => (
+          <article class="group relative bg-white/[0.04] backdrop-blur-sm border border-white/10 rounded-2xl p-7 hover:bg-white/[0.07] hover:border-primary-400/30 transition-all duration-300">
+            
+            <!-- Icon badge -->
+            <div class="size-11 rounded-xl bg-primary-500/15 ring-1 ring-primary-400/30 text-primary-200 flex items-center justify-center mb-5 group-hover:bg-primary-500/25 group-hover:text-primary-100 transition-colors">
+              <div class="size-5" set:html={f.icon} />
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-white tracking-tight leading-tight mb-3">
+              {f.title}
+            </h3>
+
+            <!-- Body -->
+            <p class="text-[15px] text-slate-300 leading-[1.6]">
+              {f.body}
+            </p>
+            
+          </article>
+        ))}
+      </div>
+
+      <!-- Fade Overlay for unexpanded state -->
+      <div id="features-fade-overlay" class="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-primary-950 via-primary-950/80 to-transparent pointer-events-none transition-opacity duration-500"></div>
+    </div>
+
+    <!-- Expand Button -->
+    <div id="features-expand-btn-wrapper" class="mt-8 flex justify-center transition-opacity duration-500">
+      <button id="btn-expand-features" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-slate-300 font-medium text-sm hover:bg-white/10 hover:text-white transition-colors">
+        Muito mais
+        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom fade pra suavizar borda com seção seguinte -->
+  <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-primary-950 to-transparent pointer-events-none"></div>
+</section>
+
+<style>
+  /* Entrance animations (Stagger) */
+  #features-old-identity [data-reveal] article {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  #features-old-identity [data-reveal].is-revealed article {
+    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #features-old-identity article:nth-child(1) { animation-delay: 0.05s; }
+  #features-old-identity article:nth-child(2) { animation-delay: 0.10s; }
+  #features-old-identity article:nth-child(3) { animation-delay: 0.15s; }
+  #features-old-identity article:nth-child(4) { animation-delay: 0.20s; }
+  #features-old-identity article:nth-child(5) { animation-delay: 0.25s; }
+  #features-old-identity article:nth-child(6) { animation-delay: 0.30s; }
+  #features-old-identity article:nth-child(7) { animation-delay: 0.35s; }
+  #features-old-identity article:nth-child(8) { animation-delay: 0.40s; }
+  #features-old-identity article:nth-child(9) { animation-delay: 0.45s; }
+  #features-old-identity article:nth-child(10) { animation-delay: 0.50s; }
+  #features-old-identity article:nth-child(11) { animation-delay: 0.55s; }
+  #features-old-identity article:nth-child(12) { animation-delay: 0.60s; }
+</style>
+
+<script>
+  const section = document.getElementById('features-old-identity');
+  if (section) {
+    const reveals = section.querySelectorAll('[data-reveal]');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    reveals.forEach(r => observer.observe(r));
+  }
+
+  // Expand functionality
+  const btnExpand = document.getElementById('btn-expand-features');
+  const container = document.getElementById('features-expand-container');
+  const overlay = document.getElementById('features-fade-overlay');
+  const btnWrapper = document.getElementById('features-expand-btn-wrapper');
+
+  if (btnExpand && container && overlay && btnWrapper) {
+    btnExpand.addEventListener('click', () => {
+      // Set to scrollHeight to animate to full height
+      container.style.maxHeight = `${container.scrollHeight}px`;
+      overlay.style.opacity = '0';
+      
+      // Hide button wrapper
+      btnWrapper.style.opacity = '0';
+      setTimeout(() => {
+        btnWrapper.style.display = 'none';
+        // After transition, remove max-height so it responds to window resize properly
+        container.style.maxHeight = 'none'; 
+      }, 700);
+    });
+  }
+</script>

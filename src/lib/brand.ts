@@ -10,7 +10,7 @@ export const BRAND = {
   name:     "Kora",
   tagline:  "Centralize a operação do seu WhatsApp pra toda empresa, e venda mais",
   subline:  "Atendimento, vendas e gestão num só lugar.",
-  domain:   "kora.bluedigitalhub.com.br",
+  domain:   "www.omnikora.com.br",
 
   // CTA principal — link do WhatsApp comercial
   whatsappNumber: "5511987253394", // +55 11 98725-3394
