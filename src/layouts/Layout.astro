@@ -83,6 +83,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
         ]
       }
     `} />
+
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-5MYZSHWHNZ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-5MYZSHWHNZ');
+    </script>
   </head>
   <body class="bg-white text-slate-900 antialiased">
     <slot />
