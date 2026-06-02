@@ -1,0 +1,176 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Nav from '@/components/Nav.astro';
+import Footer from '@/components/Footer.astro';
+import RecentPosts from '@/components/RecentPosts.astro';
+import { BRAND } from '@/lib/brand';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+---
+
+<Layout
+  title={`${post.data.title} | Kora Blog`}
+  description={post.data.description}
+  ogImage={post.data.image}
+  ogType="article"
+>
+  <Nav />
+
+  <!-- JSON-LD BlogPosting para Rich Snippets no Google -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "image": post.data.image || new URL('/og.png', Astro.site).toString(),
+    "datePublished": post.data.date.toISOString(),
+    "dateModified": post.data.date.toISOString(),
+    "author": {
+      "@type": "Organization",
+      "name": "Equipe Kora",
+      "url": Astro.site?.toString()
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Kora",
+      "logo": {
+        "@type": "ImageObject",
+        "url": new URL('/logo_kora_curto.png', Astro.site).toString()
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": new URL(Astro.url.pathname, Astro.site).toString()
+    },
+    "keywords": post.data.tags.join(', '),
+    "inLanguage": "pt-BR",
+    "url": new URL(Astro.url.pathname, Astro.site).toString()
+  })} />
+
+  <!-- Hero Imersivo - Fundo escuro fixo -->
+  <header style="background: #0b0c1e;" class="relative pt-40 pb-32 overflow-hidden flex flex-col items-center justify-center text-center px-6 min-h-[60vh]">
+    {post.data.image && (
+      <div class="absolute inset-0 z-0">
+        <img src={post.data.image} alt="Background" class="w-full h-full object-cover blur-xl scale-110" style="opacity: 0.25;" />
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,12,30,0.7), #0b0c1e);"></div>
+      </div>
+    )}
+
+    <div class="relative z-10 max-w-4xl mx-auto">
+      <span style="color: #6b9fff; background: rgba(107,159,255,0.1); border: 1px solid rgba(107,159,255,0.3);" class="inline-block mb-6 text-sm font-bold tracking-widest uppercase px-4 py-1 rounded-full">
+        {post.data.category}
+      </span>
+
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-8" style="color: #ffffff;">
+        {post.data.title}
+      </h1>
+
+      <time class="text-sm font-medium" style="color: #94a3b8;">
+        {formattedDate}
+      </time>
+    </div>
+  </header>
+
+  <!-- Área do Artigo - Fundo branco fixo -->
+  <main style="background: #ffffff;" class="pb-24">
+    <article class="max-w-3xl mx-auto px-6 pt-16">
+
+      <!-- Author Badge -->
+      <div class="flex items-center gap-4 mb-12 pb-8" style="border-bottom: 1px solid #e2e8f0;">
+        <div class="w-12 h-12 flex items-center justify-center">
+          <img src={BRAND.logoMark} alt={BRAND.name} class="w-full h-auto" />
+        </div>
+        <div>
+          <p class="font-bold text-base uppercase tracking-widest" style="color: #0f172a;">{post.data.author}</p>
+          <p class="text-sm" style="color: #64748b;">Autor(a) · {formattedDate}</p>
+        </div>
+      </div>
+
+      <!-- Conteúdo Markdown -->
+      <div class="article-body">
+        <Content />
+      </div>
+
+    </article>
+  </main>
+
+  <RecentPosts />
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* Estilos do corpo do artigo - sempre light */
+  .article-body {
+    color: #334155;
+    font-size: 1.125rem;
+    line-height: 1.85;
+  }
+
+  .article-body h2 {
+    font-size: 1.875rem;
+    font-weight: 800;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    color: #0f172a;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .article-body h3 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1e293b;
+  }
+
+  .article-body p {
+    margin-bottom: 1.5rem;
+    color: #334155;
+  }
+
+  .article-body strong {
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .article-body a {
+    color: #004add;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  .article-body a:hover {
+    color: #0035a8;
+  }
+
+  .article-body ul {
+    list-style-type: disc;
+    padding-left: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .article-body li {
+    margin-bottom: 0.625rem;
+    color: #334155;
+  }
+
+  .article-body li strong {
+    color: #0f172a;
+  }
+</style>
