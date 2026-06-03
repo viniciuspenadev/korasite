@@ -24,6 +24,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#fbfbfd" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
@@ -45,12 +46,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image"       content={new URL(ogImage, Astro.site).toString()} />
 
-    <!-- Inter via Google Fonts (preconnect pra acelerar) -->
+    <!-- Tipografia Kora — Bricolage Grotesque (display) + Hanken Grotesk (corpo).
+         Pareamento grotesco moderno: personalidade no título, calma no corpo.
+         font-display=swap evita texto invisível (FOIT). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
     />
 
     <link rel="icon" type="image/png" href="/logo_kora_curto.png" />
@@ -96,8 +99,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
       gtag('config', 'G-5MYZSHWHNZ');
     </script>
   </head>
-  <body class="bg-white text-slate-900 antialiased">
+  <body class="bg-[var(--color-paper)] text-slate-900 antialiased">
     <slot />
+
+    <!-- Reveal genérico: revela qualquer [data-reveal] ao entrar no viewport.
+         Mora no Layout (não num componente) pra não quebrar se uma seção for
+         trocada/removida. Cabeçalhos de FlowAnimation/AdvancedFeatures dependem disto. -->
+    <script>
+      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]")
+      if (reveals.length && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("in-view")
+                io.unobserve(e.target)
+              }
+            }
+          },
+          // threshold 0 (não 0.15) pra disparar mesmo em elementos muito altos
+          // que ficam clipados por um ancestral overflow:hidden (ex.: a grade de
+          // features no mobile, que tem 1 coluna e fica gigante).
+          { threshold: 0, rootMargin: "0px 0px -80px 0px" }
+        )
+        reveals.forEach((el) => io.observe(el))
+      } else {
+        reveals.forEach((el) => el.classList.add("in-view"))
+      }
+    </script>
 
     <!-- Kora — chat widget -->
     <script is:inline async src="https://kora.bluedigitalhub.com.br/w/blue-digital-hub"></script>
@@ -105,7 +134,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
     <!-- Lenis Smooth Scroll (Configuração Estável e Rápida) -->
     <script is:inline src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
     <script is:inline>
+      const __noLenis = new URLSearchParams(location.search).has('nolenis');
+      if (__noLenis && location.hash) {
+        // Modo screenshot: reancorar após o layout estabilizar (fontes/imagens)
+        const __reanchor = () => {
+          const el = document.querySelector(location.hash);
+          if (el) el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        };
+        window.addEventListener('load', () => { setTimeout(__reanchor, 1500); });
+      }
       document.addEventListener('DOMContentLoaded', () => {
+        if (__noLenis) return;
         const lenis = new Lenis({
           lerp: 0.15,           // Alta responsividade (início imediato)
           smoothWheel: true,

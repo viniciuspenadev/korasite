@@ -13,7 +13,7 @@ export const BRAND = {
   domain:   "www.omnikora.com.br",
 
   // CTA principal — link do WhatsApp comercial
-  whatsappNumber: "5511987253394", // +55 11 98725-3394
+  whatsappNumber: "5511920932633", // +55 11 92093-2633
   whatsappCta:    "Falar no WhatsApp",
   whatsappPrefill:"Oi! Quero saber mais sobre o Kora.",
 

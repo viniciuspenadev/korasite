@@ -8,9 +8,15 @@
 ─────────────────────────────────────────────────────────────── */
 
 @theme {
-  /* Fontes */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Inter", system-ui, sans-serif;
+  /* Fontes — pareamento grotesco moderno.
+     Display: Bricolage Grotesque (caráter, títulos). Corpo: Hanken Grotesk (calma, UI). */
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+
+  /* Superfícies — fundo "papel" frio quase-branco (mata o branco-puro de IA) */
+  --color-paper:   #fbfbfd;  /* fundo base do site */
+  --color-surface: #ffffff;  /* cards/superfícies elevadas sobre o papel */
+  --color-ink:     #0b1020;  /* tinta quase-preta levemente azulada (texto forte) */
 
   /* Brand — azul Kora (alinhado com o app) */
   --color-primary-50:  #eef2ff;
@@ -215,6 +221,7 @@
 
 /* Base reset + smoothing */
 html {
+  color-scheme: light;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -223,10 +230,26 @@ html {
 
 body {
   font-family: var(--font-sans);
-  /* Defensivo: impede que mockups absolutos (cursor, tooltips, blob orb) gerem
-     scroll horizontal involuntário no mobile. Cada section já tem overflow-hidden,
-     mas isso garante que NADA estoure o viewport. */
-  overflow-x: hidden;
+  background: var(--color-paper);
+  /* Defensivo: impede scroll horizontal involuntário no mobile.
+     `clip` (em vez de `hidden`) NÃO cria contexto de rolagem, então não quebra
+     `position: sticky` (usado no empilhamento de cards do "Como funciona"). */
+  overflow-x: clip;
+}
+
+/* Títulos sempre na display (Bricolage Grotesque). Tracking apertado + peso firme
+   dão a pegada "grotesco moderno" (Linear/Vercel). O Bricolage tem optical sizing,
+   então títulos grandes ganham contraste sem precisar de gradiente. */
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  font-optical-sizing: auto;
+  text-wrap: balance;   /* quebra de linha equilibrada em títulos grandes */
+}
+
+/* Remove o atraso de ~300ms de toque e o highlight padrão em interativos */
+a, button, [role="button"], summary {
+  touch-action: manipulation;
 }
 
 /* Focus visible refinado — azul Kora */

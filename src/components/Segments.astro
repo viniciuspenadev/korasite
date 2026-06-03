@@ -62,7 +62,7 @@ const icons: Record<typeof segments[number]["icon"], string> = {
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {segments.map((s) => (
-        <article class="group bg-white border border-slate-200 rounded-2xl p-6 hover:border-primary-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary-600/5 transition-all cursor-default">
+        <article class="group bg-white border border-slate-200 rounded-2xl p-6 hover:border-primary-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary-600/5 transition cursor-default">
           <div class="size-10 rounded-lg bg-primary-50 text-primary-700 flex items-center justify-center mb-4 group-hover:bg-primary-600 group-hover:text-white transition-colors">
             <span class="size-5" set:html={icons[s.icon]}></span>
           </div>

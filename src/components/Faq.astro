@@ -50,10 +50,10 @@ const questions = [
 
     <div class="space-y-3">
       {questions.map((item) => (
-        <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden transition-all open:border-primary-200 open:shadow-md open:shadow-primary-600/5">
+        <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden transition open:border-primary-200 open:shadow-md open:shadow-primary-600/5">
           <summary class="cursor-pointer list-none flex items-center justify-between gap-4 px-5 py-4 hover:bg-slate-50 transition-colors">
             <span class="text-base font-semibold text-slate-900 leading-snug">{item.q}</span>
-            <span class="size-7 rounded-full bg-slate-100 text-slate-600 group-open:bg-primary-100 group-open:text-primary-700 flex items-center justify-center shrink-0 transition-all group-open:rotate-180">
+            <span class="size-7 rounded-full bg-slate-100 text-slate-600 group-open:bg-primary-100 group-open:text-primary-700 flex items-center justify-center shrink-0 transition group-open:rotate-180">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"/>
               </svg>

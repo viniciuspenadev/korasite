@@ -27,10 +27,7 @@ const companies: string[] = [
 
   <!-- Track: lista duplicada (companies + companies) pra loop seamless -->
   <div class="marquee-mask">
-    <div
-      class="flex items-center gap-14 w-max"
-      style="animation: marquee 35s linear infinite;"
-    >
+    <div class="marquee-track flex items-center gap-14 w-max">
       {companies.map((c) => (
         <span class="text-xl font-bold text-slate-400 whitespace-nowrap tracking-tight select-none">
           {c}
@@ -45,3 +42,15 @@ const companies: string[] = [
     </div>
   </div>
 </section>
+
+<style>
+  .marquee-track {
+    animation: marquee 35s linear infinite;
+  }
+  /* Acessibilidade: para o marquee pra quem pediu menos movimento */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+</style>
