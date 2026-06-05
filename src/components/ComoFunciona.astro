@@ -16,7 +16,6 @@ const items = [
   { id: "chat",       label: "Chat Interno" },
   { id: "integracao", label: "Integração" },
   { id: "crm",        label: "CRM" },
-  { id: "meta",       label: "Certificada pela Meta" },
 ]
 
 // Ícones (Lucide-style, stroke 2) por id — SVG, nunca emoji.
@@ -231,48 +230,6 @@ const icons: Record<string, string> = {
           </div>
         </article>
 
-        <!-- CARD 5 — Certificada pela Meta -->
-        <article id="cf-meta" data-card data-index="4" class="cf-card" style="--i: 4">
-          <div class="cf-card-inner grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <span class="cf-badge">Oficial</span>
-              <h3 class="cf-title">API oficial,<br /><span class="text-primary-400">certificada pela Meta.</span></h3>
-              <p class="cf-copy">Número verificado, selo oficial e escala sem risco de bloqueio. Você opera dentro das regras do WhatsApp, com a segurança de uma BSP homologada.</p>
-              <ul class="cf-list">
-                <li>WhatsApp Business API oficial (Meta)</li>
-                <li>Sem risco de ban por automação irregular</li>
-                <li>Migração do seu número com acompanhamento</li>
-              </ul>
-            </div>
-            <!-- Mockup: selo de verificação -->
-            <div class="cf-mock p-6 flex items-center justify-center">
-              <div class="w-full max-w-[320px] bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
-                  <div class="size-11 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.07-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88"/></svg>
-                  </div>
-                  <div class="min-w-0">
-                    <p class="text-sm font-bold text-slate-900 flex items-center gap-1">
-                      WhatsApp Business API
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877F2" class="shrink-0"><path d="M12 2l2.4 1.8 3-.1 1 2.8 2.6 1.6-.9 2.9.9 2.9-2.6 1.6-1 2.8-3-.1L12 22l-2.4-1.8-3 .1-1-2.8L3 15.9l.9-2.9L3 10.1l2.6-1.6 1-2.8 3 .1L12 2z"/><path d="M9.5 12.5l1.8 1.8 3.5-3.8" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </p>
-                    <p class="text-[11px] text-slate-500">Número verificado · Oficial</p>
-                  </div>
-                </div>
-                <div class="space-y-2.5 pt-4">
-                  <div class="flex items-center gap-2 text-xs text-slate-700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-emerald-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Selo verde de empresa verificada</div>
-                  <div class="flex items-center gap-2 text-xs text-slate-700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-emerald-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Disparo em massa sem bloqueio</div>
-                  <div class="flex items-center gap-2 text-xs text-slate-700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-emerald-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Criptografia ponta a ponta da Meta</div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[10px] text-slate-400">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 7A5.1 5.1 0 0 1 12 4c2.8 0 5.1 2.3 5.1 5.1 0 1.9-1 3.5-2.6 4.4-1.6.9-2.5 1.4-2.5 2.5v1M12 20h.01"/></svg>
-                  Provido por BSP homologada Meta
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
       </div>
     </div>
   </div>
@@ -369,6 +326,69 @@ const icons: Record<string, string> = {
   @media (prefers-reduced-motion: reduce) {
     .cf-card { position: static !important; min-height: 0 !important; }
     .cf-card + .cf-card { margin-top: 1.25rem; }
+  }
+
+  /* ── Mobile pequeno: compacta os cards pra caber na tela ── */
+  @media (max-width: 480px) {
+    .cf-card {
+      padding: 1.1rem;
+      border-radius: 1.25rem;
+      top: calc(4.5rem + var(--i) * 0.55rem);
+    }
+    .cf-card + .cf-card { margin-top: 0.85rem; }
+
+    /* Grid: texto em cima, mockup embaixo — 1 coluna */
+    .cf-card-inner {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+
+    /* Badge */
+    .cf-badge {
+      font-size: 0.62rem;
+      padding: 0.2rem 0.55rem;
+      margin-bottom: 0.6rem;
+    }
+
+    /* Título */
+    .cf-title { font-size: 1.3rem; line-height: 1.15; }
+
+    /* Descrição */
+    .cf-copy { font-size: 0.83rem; margin-top: 0.5rem; }
+
+    /* Bullets */
+    .cf-list { margin-top: 0.65rem; gap: 0.35rem; }
+    .cf-list li { font-size: 0.77rem; }
+
+    /* Mockup: full width, altura limitada pra não vazar */
+    .cf-mock {
+      width: 100%;
+      max-height: 220px;
+      overflow: hidden;
+      border-radius: 0.75rem;
+    }
+
+    /* Textos dentro do mockup menores */
+    .cf-mock .text-sm  { font-size: 0.7rem !important; }
+    .cf-mock .text-xs  { font-size: 0.65rem !important; }
+    .cf-mock .text-\[10px\] { font-size: 8px !important; }
+    .cf-mock .text-\[9px\]  { font-size: 7px !important; }
+    .cf-mock .text-\[8px\]  { font-size: 7px !important; }
+
+    /* KPIs: valor menor */
+    .cf-kpi-v { font-size: 1rem !important; }
+
+    /* Padding interno do mockup */
+    .cf-mock > div:not(.cf-winbar) { padding: 0.6rem !important; }
+    .cf-mock .p-4  { padding: 0.6rem !important; }
+    .cf-mock .p-3  { padding: 0.5rem !important; }
+    .cf-mock .p-6  { padding: 0.75rem !important; }
+    .cf-mock .gap-2   { gap: 0.35rem !important; }
+    .cf-mock .gap-2\.5 { gap: 0.4rem !important; }
+
+    /* Integrações: grid 2 colunas mais compacto */
+    .cf-int { padding: 0.45rem 0.5rem; gap: 0.4rem; }
+    .cf-int-ic { width: 1.5rem; height: 1.5rem; }
   }
 </style>
 
