@@ -471,10 +471,8 @@ const FIRST = CONVERSATIONS[0]
       gap: 4px !important;
       padding: 0 8px 8px !important;
     }
-    /* Bolhas: padding menor, max-width menor */
-    .bubble-enter > div,
-    #bubble-cycle-container .bg-white\/92,
-    #bubble-cycle-container .bg-\\[\\#DCF8C6\\]\/95 {
+    /* Bolhas: padding menor, max-width menor — seleciona os divs de conteúdo */
+    #bubble-cycle-container [data-bubble-group] > div > div:last-child {
       padding: 5px 10px !important;
       max-width: 82% !important;
     }
