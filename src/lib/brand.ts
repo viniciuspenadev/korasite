@@ -31,5 +31,5 @@ export const BRAND = {
   logoMark:   "/logo_kora_curto.png",  // só o "k" em quadrado azul (favicon, espaços pequenos)
 } as const
 
-export const waLink = (prefill = BRAND.whatsappPrefill) =>
+export const waLink = (prefill: string = BRAND.whatsappPrefill) =>
   `https://wa.me/${BRAND.whatsappNumber}?text=${encodeURIComponent(prefill)}`

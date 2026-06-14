@@ -7,13 +7,15 @@ interface Props {
   description?: string
   ogImage?:     string
   ogType?:      string
+  breadcrumbs?: { name: string; url: string }[]
 }
 
 const {
-  title       = "Kora - CRM de WhatsApp Integrado, centralize todo seu atendimento",
-  description = "Centralize conversas, gerencie sua equipe e feche mais vendas pelo WhatsApp. Atendimento e gestão em um único sistema para impulsionar seu negócio.",
+  title       = "CRM e Atendimento no WhatsApp com IA | Kora",
+  description = "Plataforma de atendimento e CRM no WhatsApp: multiatendimento, funil de vendas, agendamento e IA num só lugar. Vários atendentes, um número. Peça uma demonstração.",
   ogImage     = "/og.webp",
   ogType      = "website",
+  breadcrumbs,
 } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString()
@@ -45,6 +47,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
     <meta name="twitter:title"       content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image"       content={new URL(ogImage, Astro.site).toString()} />
+
+    <!-- Breadcrumb (rich result no Google) — só quando a página informa a trilha -->
+    {breadcrumbs && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbs.map((b, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: b.name,
+          item: b.url,
+        })),
+      })} />
+    )}
 
     <!-- Tipografia Kora — Bricolage Grotesque (display) + Hanken Grotesk (corpo).
          Pareamento grotesco moderno: personalidade no título, calma no corpo.

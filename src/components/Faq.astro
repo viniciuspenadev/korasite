@@ -37,6 +37,17 @@ const questions = [
 ---
 
 <section id="faq" class="relative bg-white py-24 lg:py-32 border-t border-slate-100">
+  <!-- FAQPage schema — habilita rich results de perguntas no Google -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  })} />
+
   <div class="max-w-3xl mx-auto px-6">
 
     <div class="text-center mb-14">

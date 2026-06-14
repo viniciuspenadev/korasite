@@ -135,15 +135,17 @@
   50%      { transform: rotate(3deg)   translateY(-4px); }
 }
 
-/* Rotating word no H1 do hero — slide-up loop entre 4 palavras + 1
-   duplicada da 1ª no fim pra o loop voltar suave (snap invisível).
-   Cycle 12s: cada palavra fica visível ~2.2s, transição ~0.5s. */
+/* Rotating word no H1 do hero — slide-up loop entre 5 canais (WhatsApp,
+   Instagram, Facebook, Telegram, Google) + 1 duplicada da 1ª no fim pro loop
+   voltar suave (snap invisível). Passo = 1.05em (= line-height do H1).
+   Cycle 12s: cada palavra fica visível ~2s, transição ~0.5s. */
 @keyframes rotateText {
-  0%, 18%   { transform: translateY(0); }
-  22%, 40%  { transform: translateY(-1.02em); }
-  44%, 62%  { transform: translateY(-2.04em); }
-  66%, 84%  { transform: translateY(-3.06em); }
-  88%, 100% { transform: translateY(-4.08em); }
+  0%,  14%   { transform: translateY(0); }
+  18%, 31%   { transform: translateY(-1.05em); }
+  35%, 48%   { transform: translateY(-2.10em); }
+  52%, 65%   { transform: translateY(-3.15em); }
+  69%, 82%   { transform: translateY(-4.20em); }
+  86%, 100%  { transform: translateY(-5.25em); }
 }
 
 .rotate-track {

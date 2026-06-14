@@ -109,9 +109,29 @@ const FIRST = CONVERSATIONS[0]
     <!-- Coluna esquerda: copy + CTA -->
     <div class="animate-[fadeUp_0.6s_ease-out_both] text-center lg:text-left">
 
-      <h1 class="text-[3rem] sm:text-[3.5rem] lg:text-[3.8rem] xl:text-[4.5rem] font-bold tracking-tight leading-[1.05]">
-        <span class="text-primary-600">Centralize</span>
-        <span class="text-slate-900"> todos os canais<br />de comunicação.</span>
+      <!-- Fileira de ícones das plataformas centralizadas -->
+      <div class="flex items-center gap-2 mb-5 justify-center lg:justify-start" aria-hidden="true">
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#E1306C" title="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0m0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84m0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#1877F2" title="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#25D366" title="WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.07-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#229ED9" title="Telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.94 2.5C6.7 2.5 2.44 6.76 2.44 12s4.26 9.5 9.5 9.5 9.5-4.26 9.5-9.5-4.25-9.5-9.5-9.5m4.42 6.5-1.48 6.96c-.1.49-.4.61-.81.38l-2.24-1.65-1.08 1.04c-.12.12-.22.22-.45.22l.16-2.28 4.15-3.75c.18-.16-.04-.25-.28-.09l-5.13 3.23-2.21-.69c-.48-.15-.49-.48.1-.71l8.63-3.33c.4-.15.75.09.62.7"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" title="Google">
+          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        </span>
+      </div>
+
+      <h1 class="text-[3rem] sm:text-[3.5rem] lg:text-[3.8rem] xl:text-[4.5rem] font-bold tracking-tight leading-[1.05] text-slate-900">
+        O atendimento<br />
+        da <span class="text-primary-600">sua empresa</span><br />
+        na Kora.
       </h1>
 
       <p class="text-base lg:text-lg text-slate-600 mt-7 max-w-xl leading-relaxed mx-auto lg:mx-0">
@@ -120,24 +140,17 @@ const FIRST = CONVERSATIONS[0]
       </p>
 
       <div class="mt-10 flex flex-col items-center lg:items-start gap-4">
-        <!-- Badge chamativo -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold tracking-wide shadow-sm">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          LIBERADO: 3 DIAS GRÁTIS
-        </div>
-        
         <div class="flex items-center justify-center lg:justify-start gap-5 flex-wrap w-full">
           <a
-            href="https://kora.bluedigitalhub.com.br/signup"
-            class="group relative inline-flex items-center gap-2.5 bg-gradient-to-r from-primary-600 to-violet-600 hover:from-primary-500 hover:to-violet-500 text-white font-semibold px-8 py-4 rounded-xl text-base transition-all shadow-[0_4px_20px_rgba(79,70,229,0.25)] hover:shadow-[0_6px_25px_rgba(79,70,229,0.4)] ring-1 ring-inset ring-white/20 hover:-translate-y-0.5"
+            href={waLink("Olá! Quero solicitar uma demonstração da Kora.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="demo-cta group inline-flex items-center gap-2.5 text-white font-semibold px-8 py-4 text-base"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-90">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            Testar Grátis Agora
+            Solicitar demonstração
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-1">
               <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -150,7 +163,7 @@ const FIRST = CONVERSATIONS[0]
         
         <p class="mt-2 text-[13px] text-slate-500 text-center lg:text-left flex items-center justify-center lg:justify-start gap-1.5">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Sem cartão de crédito. Acesso imediato à plataforma.
+          Demonstração gratuita · sem compromisso
         </p>
       </div>
     </div>
@@ -409,6 +422,46 @@ const FIRST = CONVERSATIONS[0]
 </section>
 
 <style>
+  /* CTA "Solicitar demonstração" — cápsula azul, degradê no corpo e borda
+     cônica que gira ao passar o mouse. */
+  @property --kora-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  .demo-cta {
+    position: relative;
+    z-index: 0;
+    border-radius: 9999px;
+    background: linear-gradient(115deg, #003db8 0%, #1a5bff 50%, #4f7cff 100%);
+    box-shadow: 0 6px 22px -6px rgba(0, 74, 221, 0.5);
+    transition: transform .25s ease, box-shadow .3s ease, background .4s ease;
+  }
+  .demo-cta:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(115deg, #0042c4 0%, #2f6bff 50%, #6f97ff 100%);
+    box-shadow: 0 12px 34px -8px rgba(0, 74, 221, 0.6);
+  }
+  .demo-cta::before {
+    content: "";
+    position: absolute;
+    inset: -2.5px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--kora-angle), #5e85ff, #9cbcff, #d6e6ff, #3a6dff, #5e85ff);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .demo-cta:hover::before {
+    opacity: 1;
+    animation: koraSpin 2.4s linear infinite;
+  }
+  @keyframes koraSpin { to { --kora-angle: 360deg; } }
+  @media (prefers-reduced-motion: reduce) {
+    .demo-cta:hover { transform: none; }
+    .demo-cta:hover::before { animation: none; }
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-12px); }
@@ -553,7 +606,7 @@ const FIRST = CONVERSATIONS[0]
   // Ciclo das bubbles da nova Option 2 a cada 7s.
   const prefersReducedMotionNew = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!prefersReducedMotionNew) {
-    const bubbleGroups = Array.from(document.querySelectorAll("[data-bubble-group]"));
+    const bubbleGroups = Array.from(document.querySelectorAll<HTMLElement>("[data-bubble-group]"));
     if (bubbleGroups.length > 0) {
       let currentBubble = 0;
       setInterval(() => {

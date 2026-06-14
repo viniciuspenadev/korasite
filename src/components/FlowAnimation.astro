@@ -322,7 +322,7 @@
       const ns = 'http://www.w3.org/2000/svg';
       
       // Helper to draw a glowing path with animated data packets
-      const drawPath = (dStr, numPackets = 1) => {
+      const drawPath = (dStr: string, numPackets = 1) => {
         // Background solid faint line
         const bgPath = document.createElementNS(ns, 'path');
         bgPath.setAttribute('d', dStr);
@@ -426,11 +426,11 @@
     observer.observe(flowSection);
 
     // Redraw on resize
-    let resizeTimer;
+    let resizeTimer: ReturnType<typeof setTimeout>;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        if (container.classList.contains('flow-animation-active')) {
+        if (container?.classList.contains('flow-animation-active')) {
           drawLines();
         }
       }, 100);
