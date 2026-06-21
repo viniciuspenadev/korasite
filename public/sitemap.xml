@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.omnikora.com.br/</loc>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.omnikora.com.br/blog/</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.omnikora.com.br/blog/o-custo-invisivel-da-demora/</loc>
-    <lastmod>2026-06-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.omnikora.com.br/lgpd/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.omnikora.com.br/privacidade/</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.omnikora.com.br/termos/</loc>
-    <priority>0.5</priority>
-  </url>
-</urlset>
+<!--
+  Índice de sitemap em /sitemap.xml.
+  Existe só para corrigir um arquivo estático antigo (incompleto) que já tinha
+  sido publicado nesta URL e que o Google podia ter em cache/submetido.
+  Aponta para o sitemap real e SEMPRE ATUALIZADO gerado pelo @astrojs/sitemap.
+-->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.omnikora.com.br/sitemap-0.xml</loc>
+  </sitemap>
+</sitemapindex>
