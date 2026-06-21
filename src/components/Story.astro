@@ -1,0 +1,802 @@
+---
+/**
+ * Storytelling visual — 5 cenas do produto.
+ * "Da mensagem ao caixa": lead chega → IA responde → time fecha →
+ *                          time inteiro num número → dados que viram decisão.
+ *
+ * Cada cena alterna lado (mockup esq/dir) pra ritmo visual.
+ * Scroll-driven cinema: cena 1 estática (âncora), cenas 2-5 fazem
+ *                       fade+scale crescendo ao entrar e recuando ao sair.
+ */
+---
+
+<section id="produto" class="relative bg-slate-50 py-24 lg:py-32 overflow-hidden">
+  <!-- Decorativo: blob azul muito sutil no canto -->
+  <div class="absolute top-0 right-0 w-[28rem] h-[28rem] bg-primary-100 rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+
+  <div class="max-w-6xl mx-auto px-6 relative">
+
+    <!-- Header da seção -->
+    <div data-reveal class="max-w-2xl mb-20">
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary-600 mb-4">
+        Como funciona
+      </p>
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-[1.05]">
+        Da mensagem<br />ao caixa.
+      </h2>
+      <p class="text-lg text-slate-600 mt-6 leading-relaxed">
+        Lead chega, IA responde, time fecha. Tudo no mesmo lugar, e você acompanha cada passo.
+      </p>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         CENA 1 — Lead chega (mockup ESQUERDA, texto DIREITA)
+         Cena 1 é ESTÁTICA: sempre visível, sem transform no scroll.
+    ───────────────────────────────────────────────────────── -->
+    <div data-cena class="lg:min-h-[70vh] py-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Mockup: inbox -->
+      <div class="order-2 lg:order-1">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-br from-primary-200/40 to-transparent rounded-3xl blur-2xl"></div>
+          <div class="relative bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-200 overflow-hidden">
+            <!-- Mac window bar -->
+            <div class="bg-slate-50 border-b border-slate-200 px-3 py-2.5 flex items-center gap-1.5">
+              <span class="size-2.5 rounded-full bg-rose-400"></span>
+              <span class="size-2.5 rounded-full bg-amber-400"></span>
+              <span class="size-2.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] text-slate-400 ml-3 font-medium">app.kora.com.br · Inbox</span>
+            </div>
+
+            <!-- Inbox header -->
+            <div class="px-4 pt-4 pb-3 border-b border-slate-100">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-semibold text-slate-900">Caixa de entrada</p>
+                <span class="text-[10px] text-slate-400 font-medium">3 novos</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-2.5">
+                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100">Todos</span>
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded-full text-slate-500">Anúncios</span>
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded-full text-slate-500">Orgânico</span>
+              </div>
+            </div>
+
+            <!-- Conversation rows -->
+            <div class="divide-y divide-slate-100">
+              <!-- Row 1: Facebook Ads -->
+              <div class="px-4 py-3 flex items-start gap-3 bg-primary-50/40">
+                <div class="size-9 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold shrink-0">M</div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="text-sm font-semibold text-slate-900 truncate">Maria Silva</p>
+                    <span class="text-[10px] text-slate-400 shrink-0">agora</span>
+                  </div>
+                  <p class="text-xs text-slate-600 truncate mt-0.5">Vi o anúncio de vocês, queria saber se ainda tem...</p>
+                  <span class="inline-flex items-center gap-1 text-[9px] font-semibold mt-1.5 px-1.5 py-0.5 rounded bg-[#1877F2]/10 text-[#1877F2]">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Anúncio Facebook
+                  </span>
+                </div>
+                <span class="size-2 rounded-full bg-primary-600 shrink-0 mt-1.5 animate-[pulseSoft_2s_ease-in-out_infinite]"></span>
+              </div>
+
+              <!-- Row 2: Instagram -->
+              <div class="px-4 py-3 flex items-start gap-3">
+                <div class="size-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xs font-bold shrink-0">J</div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="text-sm font-semibold text-slate-900 truncate">João Costa</p>
+                    <span class="text-[10px] text-slate-400 shrink-0">2 min</span>
+                  </div>
+                  <p class="text-xs text-slate-600 truncate mt-0.5">Olá, vi seu post no Instagram. Vocês entregam pra Curitiba?</p>
+                  <span class="inline-flex items-center gap-1 text-[9px] font-semibold mt-1.5 px-1.5 py-0.5 rounded bg-pink-50 text-pink-700">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    Instagram
+                  </span>
+                </div>
+                <span class="size-2 rounded-full bg-primary-600 shrink-0 mt-1.5"></span>
+              </div>
+
+              <!-- Row 3: Orgânico -->
+              <div class="px-4 py-3 flex items-start gap-3">
+                <div class="size-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold shrink-0">C</div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="text-sm font-semibold text-slate-900 truncate">Carla Lima</p>
+                    <span class="text-[10px] text-slate-400 shrink-0">5 min</span>
+                  </div>
+                  <p class="text-xs text-slate-600 truncate mt-0.5">Boa tarde! Recebi indicação da Patrícia, vocês podem...</p>
+                  <span class="inline-flex items-center gap-1 text-[9px] font-semibold mt-1.5 px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Indicação
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cursor flutuante + tooltip (FORA do frame pra não ser cortado pelo overflow-hidden) -->
+          <div
+            class="absolute z-30 pointer-events-none"
+            style="top: 138px; left: 58%; animation: cursorBounce 2.4s ease-in-out infinite;"
+          >
+            <span class="absolute -top-1 -left-1 size-8 rounded-full bg-primary-400/20 animate-[pulseSoft_2s_ease-in-out_infinite]"></span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="drop-shadow-md relative">
+              <path d="M5 3l6 16 2.5-6.5L20 10 5 3z" fill="white" stroke="#0f172a" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <div class="absolute top-7 left-5 bg-slate-900 text-white text-[10px] font-medium rounded-md px-2 py-1 whitespace-nowrap shadow-lg">
+              Anúncio: Vestido Floral · R$ 89,90
+              <div class="absolute -top-1 left-3 size-2 bg-slate-900 rotate-45"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texto cena 1 -->
+      <div class="order-1 lg:order-2">
+        <span class="inline-flex items-center justify-center size-10 rounded-xl bg-primary-100 text-primary-700 font-bold text-lg mb-4">1</span>
+        <h3 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+          O lead chega e você<br />
+          <span class="text-primary-600">já sabe de onde.</span>
+        </h3>
+        <p class="text-lg text-slate-600 mt-5 leading-relaxed max-w-md">
+          Anúncio do Facebook, post do Instagram, indicação por boca-a-boca.
+          Todo lead cai num inbox único, etiquetado pela origem. Você sabe exatamente
+          o que está dando ROI.
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm text-slate-700">
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Click-to-WhatsApp Ads do Meta rastreado automático
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Conversas do site, Instagram e Facebook no mesmo inbox
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Relatório por campanha, anúncio e palavra-chave
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         CENA 2 — IA responde (mockup DIREITA, texto ESQUERDA)
+         Entra de baixo crescendo, sai pra cima recuando.
+    ───────────────────────────────────────────────────────── -->
+    <div data-cena class="lg:min-h-[70vh] py-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Texto cena 2 -->
+      <div>
+        <span class="inline-flex items-center justify-center size-10 rounded-xl bg-primary-100 text-primary-700 font-bold text-lg mb-4">2</span>
+        <h3 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+          A IA atende em segundos,<br />
+          <span class="text-primary-600">qualquer hora.</span>
+        </h3>
+        <p class="text-lg text-slate-600 mt-5 leading-relaxed max-w-md">
+          22h, domingo, feriado. A IA responde, qualifica perguntando o que importa,
+          e libera as conversas quentes pro seu time. O cliente nunca espera;
+          você nunca perde a janela.
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm text-slate-700">
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Treina com o tom de voz da sua empresa
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Passa pra humano no momento certo
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Manda áudio, imagem e link igual gente
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mockup: chat snippet com IA -->
+      <div>
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-bl from-primary-200/40 to-transparent rounded-3xl blur-2xl"></div>
+          <div class="relative bg-[#E5DDD5] rounded-2xl p-5 shadow-xl shadow-slate-900/15 border border-slate-200/50">
+            <div class="space-y-2.5">
+              <div class="flex justify-start">
+                <div class="max-w-[80%] bg-white rounded-2xl rounded-tl-md px-3.5 py-2 shadow-sm">
+                  <p class="text-sm text-slate-800">Boa noite! É possível agendar pra amanhã às 14h?</p>
+                  <p class="text-[10px] text-slate-400 text-right mt-1">22:47</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 px-2 py-1">
+                <div class="size-5 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shrink-0 relative">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="white" style="animation: sparkle 1.6s ease-in-out infinite;">
+                    <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"/>
+                  </svg>
+                  <span class="absolute -top-0.5 -right-0.5 size-1 bg-primary-300 rounded-full" style="animation: sparkle 1.6s ease-in-out 0.3s infinite;"></span>
+                  <span class="absolute -bottom-0.5 -left-0.5 size-1 bg-primary-300 rounded-full" style="animation: sparkle 1.6s ease-in-out 0.7s infinite;"></span>
+                </div>
+                <p class="text-[11px] font-semibold text-primary-700">Kora IA pensando...</p>
+                <span class="inline-flex gap-0.5 ml-1">
+                  <span class="size-1 bg-primary-400 rounded-full" style="animation: pulseSoft 1s ease-in-out infinite;"></span>
+                  <span class="size-1 bg-primary-400 rounded-full" style="animation: pulseSoft 1s ease-in-out 0.2s infinite;"></span>
+                  <span class="size-1 bg-primary-400 rounded-full" style="animation: pulseSoft 1s ease-in-out 0.4s infinite;"></span>
+                </span>
+              </div>
+
+              <div class="flex justify-end">
+                <div class="max-w-[85%] bg-[#DCF8C6] rounded-2xl rounded-tr-md px-3.5 py-2 shadow-sm">
+                  <p class="text-[10px] font-semibold text-primary-700 mb-1 flex items-center gap-1">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Z"/></svg>
+                    Atendente IA
+                  </p>
+                  <p class="text-sm text-slate-800">Boa noite! Tenho horário às 14h amanhã sim 💙 Posso confirmar pra você?</p>
+                  <p class="text-[10px] text-slate-400 text-right mt-1">22:47 ✓✓</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 bg-white border border-slate-200 rounded-full px-3 py-1.5 w-max mx-auto shadow-sm">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-amber-500"><path d="M13 2L3 14h7v8l10-12h-7V2z"/></svg>
+              <span class="text-[11px] font-semibold text-slate-700 tabular-nums">Respondeu em 3s · 22h47 de domingo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         CENA 3 — Time fecha (mockup ESQUERDA, texto DIREITA)
+         Kanban maior + card sendo arrastado + drop zone visível.
+    ───────────────────────────────────────────────────────── -->
+    <div data-cena class="lg:min-h-[70vh] py-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Mockup: kanban maior com drag visual -->
+      <div class="order-2 lg:order-1">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-tr from-emerald-200/40 to-transparent rounded-3xl blur-2xl"></div>
+          <div class="relative bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-200 overflow-visible">
+            <!-- Mac window bar -->
+            <div class="bg-slate-50 border-b border-slate-200 px-3 py-2.5 flex items-center gap-1.5 rounded-t-2xl">
+              <span class="size-2.5 rounded-full bg-rose-400"></span>
+              <span class="size-2.5 rounded-full bg-amber-400"></span>
+              <span class="size-2.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] text-slate-400 ml-3 font-medium">app.kora.com.br · Funil</span>
+            </div>
+
+            <!-- Kanban -->
+            <div class="p-4 bg-slate-50/50 relative rounded-b-2xl">
+              <div class="grid grid-cols-3 gap-3">
+
+                <!-- Coluna 1: Triagem -->
+                <div class="bg-white rounded-lg border border-slate-200 p-2.5">
+                  <div class="flex items-center justify-between mb-2.5">
+                    <p class="text-[11px] font-semibold text-slate-700">Triagem</p>
+                    <span class="text-[10px] text-slate-400 tabular-nums">3</span>
+                  </div>
+                  <div class="space-y-1.5">
+                    <div class="bg-slate-50 border border-slate-100 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">P</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">Pedro N.</p>
+                      </div>
+                      <p class="text-[9px] text-slate-500 truncate">orçamento</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-sky-400 to-blue-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">A</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">Ana B.</p>
+                      </div>
+                      <p class="text-[9px] text-slate-500 truncate">consulta</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">R</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">Rafael S.</p>
+                      </div>
+                      <p class="text-[9px] text-slate-500 truncate">primeiro contato</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Coluna 2: Negociação (origem do drag — placeholder dashed) -->
+                <div class="bg-white rounded-lg border border-slate-200 p-2.5">
+                  <div class="flex items-center justify-between mb-2.5">
+                    <p class="text-[11px] font-semibold text-slate-700">Negociação</p>
+                    <span class="text-[10px] text-amber-700 font-bold tabular-nums">R$ 2,1k</span>
+                  </div>
+                  <div class="space-y-1.5">
+                    <div class="bg-amber-50 border border-amber-200 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">M</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">Maria S.</p>
+                      </div>
+                      <p class="text-[9px] text-amber-700 font-bold truncate">R$ 1.290</p>
+                    </div>
+                    <!-- Placeholder dashed: onde o card arrastado estava -->
+                    <div class="border-2 border-dashed border-slate-300 rounded p-2 bg-slate-50/30">
+                      <p class="text-[9px] text-slate-400 text-center italic">arrastando...</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">L</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">Lucas T.</p>
+                      </div>
+                      <p class="text-[9px] text-amber-700 font-bold truncate">R$ 850</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Coluna 3: Ganho (drop zone destacado) -->
+                <div class="bg-emerald-50 rounded-lg border-2 border-dashed border-emerald-300 p-2.5 relative">
+                  <div class="flex items-center justify-between mb-2.5">
+                    <p class="text-[11px] font-semibold text-emerald-700 flex items-center gap-1">
+                      <span>✨</span> Ganho
+                    </p>
+                    <span class="text-[10px] font-bold text-emerald-700 tabular-nums">R$ 4,2k</span>
+                  </div>
+                  <div class="space-y-1.5">
+                    <div class="bg-emerald-50 border border-emerald-200 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">J</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">João P.</p>
+                      </div>
+                      <p class="text-[9px] text-emerald-700 font-bold truncate">R$ 780</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded p-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <div class="size-4 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">F</div>
+                        <p class="text-[10px] font-semibold text-slate-800 truncate">Fernanda D.</p>
+                      </div>
+                      <p class="text-[9px] text-emerald-700 font-bold truncate">R$ 1.420</p>
+                    </div>
+                    <!-- Drop zone indicator no final -->
+                    <div class="border-2 border-dashed border-emerald-400 rounded p-2 bg-white/60 text-center">
+                      <p class="text-[9px] text-emerald-600 font-semibold">Solte aqui ↓</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer: stats expandidos -->
+              <div class="mt-4 pt-3 border-t border-slate-200/70 flex items-center justify-between text-[10px] gap-2 flex-wrap">
+                <span class="text-slate-500">Conversão <span class="font-bold text-emerald-700">34%</span></span>
+                <span class="text-slate-500">Ticket médio <span class="font-bold text-slate-800">R$ 1.420</span></span>
+                <span class="text-slate-500"><span class="font-bold text-emerald-700">3</span> fechados hoje</span>
+              </div>
+
+              <!-- FLOATING DRAGGING CARD — entre Negociação e Ganho -->
+              <div
+                class="absolute z-30 pointer-events-none"
+                style="top: 110px; left: 56%; animation: dragFloat 2.5s ease-in-out infinite;"
+              >
+                <!-- Card sendo arrastado (tilt + extra shadow + borda Kora) -->
+                <div class="bg-white border-2 border-primary-500 rounded-md p-2 shadow-2xl shadow-primary-600/40 w-[92px]">
+                  <div class="flex items-center gap-1 mb-1">
+                    <div class="size-4 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 text-white text-[8px] font-bold flex items-center justify-center shrink-0">C</div>
+                    <p class="text-[10px] font-semibold text-slate-800 truncate">Carla L.</p>
+                  </div>
+                  <p class="text-[10px] text-emerald-700 font-bold">R$ 2.100</p>
+                </div>
+
+                <!-- Hand cursor (grabbing) no canto inferior direito -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="absolute -bottom-2 -right-2 drop-shadow-lg">
+                  <!-- Mão fechada simplificada -->
+                  <path d="M7 11V7a2 2 0 0 1 4 0v4M11 11V5a2 2 0 0 1 4 0v6M15 11V7a2 2 0 0 1 4 0v8a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6v-2a2 2 0 0 1 4 0" fill="white" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <!-- Tooltip -->
+                <div class="absolute -bottom-9 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-medium rounded-md px-2 py-1 whitespace-nowrap shadow-lg">
+                  Arrasta pro fechamento
+                  <div class="absolute -top-1 left-1/2 -translate-x-1/2 size-2 bg-slate-900 rotate-45"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texto cena 3 -->
+      <div class="order-1 lg:order-2">
+        <span class="inline-flex items-center justify-center size-10 rounded-xl bg-primary-100 text-primary-700 font-bold text-lg mb-4">3</span>
+        <h3 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+          Seu time fecha<br />
+          <span class="text-primary-600">com todo o contexto.</span>
+        </h3>
+        <p class="text-lg text-slate-600 mt-5 leading-relaxed max-w-md">
+          Funil arrastar-e-soltar mostra cada negociação em movimento.
+          A equipe assume com histórico completo, sem repetir, sem perguntar de novo.
+          Você vê o que está pra fechar agora.
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm text-slate-700">
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kanban arrastável, etapas customizáveis por pipeline
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Histórico completo do contato em cada card
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Valor estimado, ticket médio e previsão de fechamento
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         CENA 4 — Multi-agente (mockup DIREITA, texto ESQUERDA)
+         Time inteiro num único número, com atribuição automática.
+    ───────────────────────────────────────────────────────── -->
+    <div data-cena class="lg:min-h-[70vh] py-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Texto cena 4 -->
+      <div>
+        <span class="inline-flex items-center justify-center size-10 rounded-xl bg-primary-100 text-primary-700 font-bold text-lg mb-4">4</span>
+        <h3 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+          Seu time inteiro<br />
+          <span class="text-primary-600">no mesmo número.</span>
+        </h3>
+        <p class="text-lg text-slate-600 mt-5 leading-relaxed max-w-md">
+          5, 10, 50 atendentes num único WhatsApp comercial. A atribuição pode ser
+          <strong class="font-semibold text-slate-900">manual ou automática</strong>,
+          por departamento, skill ou disponibilidade. Configure do seu jeito;
+          o cliente nunca vê "transferindo".
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm text-slate-700">
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Atribuição manual ou automática por departamento ou skill
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Supervisão em tempo real do que cada atendente faz
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Pool aberto ou atribuição individual, você escolhe
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mockup: team panel -->
+      <div>
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-bl from-primary-200/40 to-transparent rounded-3xl blur-2xl"></div>
+          <div class="relative bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-200 overflow-hidden">
+            <!-- Mac window bar -->
+            <div class="bg-slate-50 border-b border-slate-200 px-3 py-2.5 flex items-center gap-1.5">
+              <span class="size-2.5 rounded-full bg-rose-400"></span>
+              <span class="size-2.5 rounded-full bg-amber-400"></span>
+              <span class="size-2.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] text-slate-400 ml-3 font-medium">app.kora.com.br · Equipe</span>
+            </div>
+
+            <!-- Header equipe -->
+            <div class="px-4 pt-4 pb-3 border-b border-slate-100">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-semibold text-slate-900">Atendentes ativos</p>
+                <span class="inline-flex items-center gap-1.5 text-[10px] text-emerald-700 font-semibold">
+                  <span class="relative flex size-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full size-1.5 bg-emerald-500"></span>
+                  </span>
+                  5 online
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-2.5">
+                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100">Todos</span>
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded-full text-slate-500">Vendas</span>
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded-full text-slate-500">Suporte</span>
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded-full text-slate-500">Financeiro</span>
+              </div>
+            </div>
+
+            <!-- Agents -->
+            <div class="divide-y divide-slate-100">
+              <!-- Marina · Vendas -->
+              <div class="px-4 py-2.5 flex items-center gap-3">
+                <div class="relative shrink-0">
+                  <div class="size-9 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold">M</div>
+                  <span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-white"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-slate-900 truncate">Marina Silva</p>
+                  <span class="inline-flex text-[9px] font-semibold mt-0.5 px-1.5 py-0.5 rounded bg-rose-50 text-rose-700">Vendas</span>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-[11px] font-bold text-slate-900 tabular-nums">4 ativas</p>
+                  <p class="text-[9px] text-emerald-600 font-medium">Em conversa</p>
+                </div>
+              </div>
+
+              <!-- Bruno · Vendas -->
+              <div class="px-4 py-2.5 flex items-center gap-3">
+                <div class="relative shrink-0">
+                  <div class="size-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xs font-bold">B</div>
+                  <span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-white"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-slate-900 truncate">Bruno Costa</p>
+                  <span class="inline-flex text-[9px] font-semibold mt-0.5 px-1.5 py-0.5 rounded bg-rose-50 text-rose-700">Vendas</span>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-[11px] font-bold text-slate-900 tabular-nums">3 ativas</p>
+                  <p class="text-[9px] text-emerald-600 font-medium">Online</p>
+                </div>
+              </div>
+
+              <!-- Patricia · Suporte -->
+              <div class="px-4 py-2.5 flex items-center gap-3">
+                <div class="relative shrink-0">
+                  <div class="size-9 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-white text-xs font-bold">P</div>
+                  <span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-amber-500 border-2 border-white"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-slate-900 truncate">Patrícia Lima</p>
+                  <span class="inline-flex text-[9px] font-semibold mt-0.5 px-1.5 py-0.5 rounded bg-sky-50 text-sky-700">Suporte</span>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-[11px] font-bold text-slate-900 tabular-nums">6 ativas</p>
+                  <p class="text-[9px] text-amber-600 font-medium">Em conversa</p>
+                </div>
+              </div>
+
+              <!-- Carlos · Suporte -->
+              <div class="px-4 py-2.5 flex items-center gap-3">
+                <div class="relative shrink-0">
+                  <div class="size-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">C</div>
+                  <span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-white"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-slate-900 truncate">Carlos Mendes</p>
+                  <span class="inline-flex text-[9px] font-semibold mt-0.5 px-1.5 py-0.5 rounded bg-sky-50 text-sky-700">Suporte</span>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-[11px] font-bold text-slate-900 tabular-nums">2 ativas</p>
+                  <p class="text-[9px] text-emerald-600 font-medium">Online</p>
+                </div>
+              </div>
+
+              <!-- Ana · Financeiro -->
+              <div class="px-4 py-2.5 flex items-center gap-3">
+                <div class="relative shrink-0">
+                  <div class="size-9 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">A</div>
+                  <span class="absolute bottom-0 right-0 size-2.5 rounded-full bg-slate-300 border-2 border-white"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-slate-900 truncate">Ana Beatriz</p>
+                  <span class="inline-flex text-[9px] font-semibold mt-0.5 px-1.5 py-0.5 rounded bg-violet-50 text-violet-700">Financeiro</span>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-[11px] font-medium text-slate-500 tabular-nums">—</p>
+                  <p class="text-[9px] text-slate-400 font-medium">Ausente</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer stats -->
+            <div class="px-4 py-2.5 bg-slate-50 flex items-center justify-between text-[10px] gap-2">
+              <span class="text-slate-500"><span class="font-bold text-slate-800 tabular-nums">15</span> conversas ativas</span>
+              <span class="text-slate-500"><span class="font-bold text-emerald-700 tabular-nums">1m 12s</span> resposta média</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         CENA 5 — KPIs e Dados (mockup ESQUERDA, texto DIREITA)
+         Dashboard com 4 KPIs principais + funil de conversão.
+    ───────────────────────────────────────────────────────── -->
+    <div data-cena class="lg:min-h-[70vh] py-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Mockup: dashboard KPIs -->
+      <div class="order-2 lg:order-1">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-br from-primary-200/40 to-transparent rounded-3xl blur-2xl"></div>
+          <div class="relative bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-200 overflow-hidden">
+            <!-- Mac window bar -->
+            <div class="bg-slate-50 border-b border-slate-200 px-3 py-2.5 flex items-center gap-1.5">
+              <span class="size-2.5 rounded-full bg-rose-400"></span>
+              <span class="size-2.5 rounded-full bg-amber-400"></span>
+              <span class="size-2.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] text-slate-400 ml-3 font-medium">app.kora.com.br · Relatórios</span>
+            </div>
+
+            <!-- Dashboard -->
+            <div class="p-4">
+              <!-- Header com período -->
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <p class="text-sm font-semibold text-slate-900">Visão geral</p>
+                  <p class="text-[10px] text-slate-400">Últimos 7 dias</p>
+                </div>
+                <div class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 text-[10px] font-medium text-slate-700">
+                  7d
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg>
+                </div>
+              </div>
+
+              <!-- 2x2 KPI grid -->
+              <div class="grid grid-cols-2 gap-2 mb-3">
+                <div class="bg-slate-50/70 border border-slate-100 rounded-lg p-2.5">
+                  <p class="text-[9px] uppercase font-semibold tracking-wider text-slate-400">Conversão</p>
+                  <p class="text-2xl font-bold text-slate-900 tabular-nums mt-1 leading-none">34<span class="text-sm text-slate-500">%</span></p>
+                  <p class="text-[10px] text-emerald-600 font-medium mt-1.5 flex items-center gap-0.5">
+                    <span>↑</span> 4 pp
+                  </p>
+                </div>
+                <div class="bg-slate-50/70 border border-slate-100 rounded-lg p-2.5">
+                  <p class="text-[9px] uppercase font-semibold tracking-wider text-slate-400">Valor ganho</p>
+                  <p class="text-2xl font-bold text-slate-900 tabular-nums mt-1 leading-none">R$ 12,4<span class="text-sm text-slate-500">k</span></p>
+                  <p class="text-[10px] text-emerald-600 font-medium mt-1.5 flex items-center gap-0.5">
+                    <span>↑</span> 18%
+                  </p>
+                </div>
+                <div class="bg-slate-50/70 border border-slate-100 rounded-lg p-2.5">
+                  <p class="text-[9px] uppercase font-semibold tracking-wider text-slate-400">1ª resposta</p>
+                  <p class="text-2xl font-bold text-slate-900 tabular-nums mt-1 leading-none">12<span class="text-sm text-slate-500">s</span></p>
+                  <p class="text-[10px] text-emerald-600 font-medium mt-1.5 flex items-center gap-0.5">
+                    <span>↓</span> 87%
+                  </p>
+                </div>
+                <div class="bg-slate-50/70 border border-slate-100 rounded-lg p-2.5">
+                  <p class="text-[9px] uppercase font-semibold tracking-wider text-slate-400">Leads novos</p>
+                  <p class="text-2xl font-bold text-slate-900 tabular-nums mt-1 leading-none">218</p>
+                  <p class="text-[10px] text-emerald-600 font-medium mt-1.5 flex items-center gap-0.5">
+                    <span>↑</span> 24%
+                  </p>
+                </div>
+              </div>
+
+              <!-- Mini funnel chart -->
+              <div class="bg-slate-50/70 border border-slate-100 rounded-lg p-3">
+                <div class="flex items-center justify-between mb-2.5">
+                  <p class="text-[10px] uppercase font-semibold tracking-wider text-slate-400">Funil de conversão</p>
+                  <p class="text-[9px] text-slate-400">218 → 74</p>
+                </div>
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] text-slate-600 w-16 shrink-0">Triagem</span>
+                    <div class="flex-1 h-3 bg-primary-50 rounded-sm relative overflow-hidden">
+                      <div class="absolute inset-y-0 left-0 bg-primary-600 rounded-sm" style="width: 100%;"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-700 tabular-nums w-10 text-right">218</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] text-slate-600 w-16 shrink-0">Negociação</span>
+                    <div class="flex-1 h-3 bg-primary-50 rounded-sm relative overflow-hidden">
+                      <div class="absolute inset-y-0 left-0 bg-primary-500 rounded-sm" style="width: 68%;"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-700 tabular-nums w-10 text-right">148</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] text-slate-600 w-16 shrink-0">Ganho</span>
+                    <div class="flex-1 h-3 bg-emerald-100 rounded-sm relative overflow-hidden">
+                      <div class="absolute inset-y-0 left-0 bg-emerald-600 rounded-sm" style="width: 34%;"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-emerald-700 tabular-nums w-10 text-right">74</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texto cena 5 -->
+      <div class="order-1 lg:order-2">
+        <span class="inline-flex items-center justify-center size-10 rounded-xl bg-primary-100 text-primary-700 font-bold text-lg mb-4">5</span>
+        <h3 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+          Dados que viram<br />
+          <span class="text-primary-600">decisão.</span>
+        </h3>
+        <p class="text-lg text-slate-600 mt-5 leading-relaxed max-w-md">
+          Conversão por anúncio, tempo médio de resposta, ticket por atendente, leads por origem.
+          Tudo em tempo real, sem precisar montar dashboard externo nem exportar planilha.
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm text-slate-700">
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Funil de conversão por etapa, anúncio e canal
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Performance por atendente e departamento
+          </li>
+          <li class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary-600 shrink-0"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tempo de 1ª resposta + cumprimento de SLA
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // ─────────────────────────────────────────────────────────────
+  // 1. Reveal genérico (header) — fade-up via IntersectionObserver
+  // ─────────────────────────────────────────────────────────────
+  const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]")
+  if (reveals.length > 0 && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view")
+            observer.unobserve(entry.target)
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }
+    )
+    reveals.forEach((el) => observer.observe(el))
+  } else {
+    reveals.forEach((el) => el.classList.add("in-view"))
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 2. Cinema scroll (5 cenas)
+  //    Cena 1 (índice 0): estática. Cenas 2-5: fade+scale ao entrar/sair.
+  // ─────────────────────────────────────────────────────────────
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+  const cenas = Array.from(document.querySelectorAll<HTMLElement>("[data-cena]"))
+
+  if (cenas.length > 0 && !prefersReducedMotion) {
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
+
+    let ticking = false
+    function updateCenas() {
+      const winH = window.innerHeight
+
+      cenas.forEach((cena, i) => {
+        if (i === 0) {
+          cena.style.opacity = "1"
+          cena.style.transform = "translateY(0) scale(1)"
+          return
+        }
+
+        const rect = cena.getBoundingClientRect()
+        const topRatio = rect.top / winH
+
+        if (topRatio >= 1) {
+          cena.style.opacity = "0"
+          cena.style.transform = "translateY(60px) scale(0.92)"
+        } else if (topRatio >= 0) {
+          const p = 1 - topRatio
+          const e = easeOutCubic(p)
+          cena.style.opacity = String(e)
+          cena.style.transform = `translateY(${60 * (1 - e)}px) scale(${0.92 + 0.08 * e})`
+        } else if (topRatio >= -1) {
+          const p = -topRatio
+          const e = easeOutCubic(p)
+          cena.style.opacity = String(1 - e)
+          cena.style.transform = `translateY(${-80 * e}px) scale(${1 - 0.12 * e})`
+        } else {
+          cena.style.opacity = "0"
+          cena.style.transform = "translateY(-80px) scale(0.88)"
+        }
+      })
+
+      ticking = false
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateCenas)
+        ticking = true
+      }
+    }
+
+    updateCenas()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll, { passive: true })
+  } else if (cenas.length > 0) {
+    cenas.forEach((cena) => {
+      cena.style.opacity = "1"
+      cena.style.transform = "none"
+    })
+  }
+</script>

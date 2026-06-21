@@ -1,0 +1,627 @@
+---
+import { waLink } from "@/lib/brand"
+
+/**
+ * Hero do site Kora.
+ *
+ * Phone mockup com 3 conversas que ciclam a cada 8s, mostrando o produto
+ * atendendo diferentes segmentos (varejo, clínica estética, imobiliária).
+ *
+ * - Header WhatsApp tem avatar + nome dinâmicos (atualizados via JS).
+ * - Cada [data-conv] container empilha por absolute; só o [data-active] é
+ *   visível. CSS no global.css faz cada [data-msg] entrar com stagger
+ *   via --delay var.
+ */
+
+type Side = "in" | "out"
+
+interface Msg {
+  side:      Side
+  text?:     string
+  who?:      string                       // badge "Atendente IA" ou nome humano
+  whoIcon?:  "bot" | "person"
+  whoColor?: string                       // tailwind text-color class pro badge
+  image?:    { emoji: string; bg: string }
+  time:      string
+  delay:     number                       // segundos no stagger
+}
+
+interface Conv {
+  business: string
+  initial:  string
+  color:    string
+  messages: Msg[]
+}
+
+const CONVERSATIONS: Conv[] = [
+  {
+    business: "Loja Bella · Moda",
+    initial:  "B",
+    color:    "#ec4899",
+    messages: [
+      { side: "in",  text: "Oi! Vocês ainda têm em estoque o vestido floral?", time: "14:22", delay: 0.5 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Oi! Temos sim, nos tamanhos P, M e G. Te mando foto?", time: "14:22", delay: 0.9 },
+      { side: "out", image: { emoji: "👗", bg: "from-rose-200 to-rose-300" }, time: "14:23", delay: 1.3 },
+      { side: "in",  text: "Lindo! Quero o tamanho M ❤️", time: "14:24", delay: 1.7 },
+      { side: "out", who: "Marina · vendedora", whoIcon: "person", whoColor: "text-violet-700",
+        text: "Oi linda! Já separei aqui. Posso passar o pix?", time: "14:24", delay: 2.1 },
+    ],
+  },
+  {
+    business: "Clínica Vita · Estética",
+    initial:  "V",
+    color:    "#a855f7",
+    messages: [
+      { side: "in",  text: "Olá, queria agendar uma limpeza de pele.", time: "10:15", delay: 0.5 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Oi! Posso te ajudar 💆‍♀️ Quando seria melhor pra você?", time: "10:15", delay: 0.9 },
+      { side: "in",  text: "Sexta à tarde dá?", time: "10:16", delay: 1.3 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Tenho 14h ✨ ou 16h. Qual prefere?", time: "10:16", delay: 1.7 },
+      { side: "in",  text: "16h tá ótimo!", time: "10:17", delay: 2.1 },
+      { side: "out", who: "Dra. Patrícia", whoIcon: "person", whoColor: "text-violet-700",
+        text: "Anotei! Te espero sexta às 16h 🌸", time: "10:17", delay: 2.5 },
+    ],
+  },
+  {
+    business: "Imob Vista · Imóveis",
+    initial:  "I",
+    color:    "#f97316",
+    messages: [
+      { side: "in",  text: "Boa tarde! Vi o anúncio do apto 2qts em Pinheiros.", time: "16:42", delay: 0.5 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Boa tarde! 🏠 Disponível: R$ 4.200/mês, mobiliado.", time: "16:42", delay: 0.9 },
+      { side: "in",  text: "Faz vista pra rua?", time: "16:43", delay: 1.3 },
+      { side: "out", image: { emoji: "🏙️", bg: "from-sky-200 to-sky-300" }, time: "16:43", delay: 1.7 },
+      { side: "out", who: "Atendente IA", whoIcon: "bot", whoColor: "text-primary-700",
+        text: "Vista frontal, claríssimo. Quando pode visitar?", time: "16:43", delay: 2.1 },
+      { side: "out", who: "Carlos · corretor", whoIcon: "person", whoColor: "text-violet-700",
+        text: "Aqui é o Carlos 👋 Te confirmo amanhã às 15h?", time: "16:44", delay: 2.5 },
+    ],
+  },
+]
+
+// Dados leves pro script client-side (sem mensagens)
+const HEADER_DATA = CONVERSATIONS.map((c) => ({
+  business: c.business,
+  initial:  c.initial,
+  color:    c.color,
+}))
+
+const FIRST = CONVERSATIONS[0]
+---
+
+<section class="relative overflow-hidden bg-[var(--color-paper)] pt-32 pb-24 lg:pt-40 lg:pb-32">
+  <!-- Atmosfera "grotesco moderno": estrutura, não blur.
+       Grid técnico fino + uma tinta fria sutil no topo. Sem blobs borrados. -->
+  <div class="absolute inset-0 -z-10 pointer-events-none">
+    <!-- tinta fria sutil descendo do topo -->
+    <div class="absolute inset-x-0 top-0 h-[60%] bg-gradient-to-b from-primary-50/60 to-transparent"></div>
+    <!-- grid técnico fino -->
+    <div
+      class="absolute inset-0 opacity-[0.04]"
+      style="background-image: linear-gradient(to right, var(--color-ink) 1px, transparent 1px), linear-gradient(to bottom, var(--color-ink) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse 80% 60% at 50% 35%, #000 40%, transparent 100%);"
+    ></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+    <!-- Coluna esquerda: copy + CTA -->
+    <div class="animate-[fadeUp_0.6s_ease-out_both] text-center lg:text-left">
+
+      <!-- Fileira de ícones das plataformas centralizadas -->
+      <div class="flex items-center gap-2 mb-5 justify-center lg:justify-start" aria-hidden="true">
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#E1306C" title="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0m0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84m0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#1877F2" title="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#25D366" title="WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.07-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" style="color:#229ED9" title="Telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.94 2.5C6.7 2.5 2.44 6.76 2.44 12s4.26 9.5 9.5 9.5 9.5-4.26 9.5-9.5-4.25-9.5-9.5-9.5m4.42 6.5-1.48 6.96c-.1.49-.4.61-.81.38l-2.24-1.65-1.08 1.04c-.12.12-.22.22-.45.22l.16-2.28 4.15-3.75c.18-.16-.04-.25-.28-.09l-5.13 3.23-2.21-.69c-.48-.15-.49-.48.1-.71l8.63-3.33c.4-.15.75.09.62.7"/></svg>
+        </span>
+        <span class="inline-flex items-center justify-center size-9 lg:size-10 rounded-xl bg-white shadow-sm ring-1 ring-slate-200/70" title="Google">
+          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        </span>
+      </div>
+
+      <h1 class="text-[3rem] sm:text-[3.5rem] lg:text-[3.8rem] xl:text-[4.5rem] font-bold tracking-tight leading-[1.05] text-slate-900">
+        O atendimento<br />
+        da <span class="text-primary-600">sua empresa</span><br />
+        na Kora.
+      </h1>
+
+      <p class="text-base lg:text-lg text-slate-600 mt-7 max-w-xl leading-relaxed mx-auto lg:mx-0">
+        Toda a operação de atendimento da sua empresa centralizado. Atendimento,
+        vendas e gestão pra todo o time, sem perder nenhuma conversa.
+      </p>
+
+      <div class="mt-10 flex flex-col items-center lg:items-start gap-4">
+        <div class="flex items-center justify-center lg:justify-start gap-5 flex-wrap w-full">
+          <a
+            href={waLink("Olá! Quero solicitar uma demonstração da Kora.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="demo-cta group inline-flex items-center gap-2.5 text-white font-semibold px-8 py-4 text-base"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-90">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Solicitar demonstração
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-1">
+              <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#produto" class="text-slate-600 hover:text-slate-900 text-sm font-semibold inline-flex items-center gap-1.5 group px-2 py-1 rounded-lg transition-colors hover:bg-slate-50">
+            Ver como funciona
+            <span class="transition-transform group-hover:translate-y-0.5">↓</span>
+          </a>
+        </div>
+        
+        <p class="mt-2 text-[13px] text-slate-500 text-center lg:text-left flex items-center justify-center lg:justify-start gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Demonstração gratuita · sem compromisso
+        </p>
+      </div>
+    </div>
+
+    <!-- Coluna direita: Opção 2 - Foto 2 com bubbles animados ciclicamente -->
+    <div class="relative animate-[fadeUp_0.8s_ease-out_0.15s_both] flex justify-center items-center py-10 lg:py-0">
+      
+
+
+      <!-- Imagem central (maior e sem borda) com chat overlay no bottom 30% -->
+      <div class="relative z-10 w-full max-w-[380px] lg:max-w-[480px]">
+        <img src="/photo_2.webp" alt="Apresentação da Plataforma Kora" width="1792" height="2400" fetchpriority="high" class="w-full h-auto object-contain" />
+
+        <!-- Chat overlay: cobre os ~33% inferiores da imagem -->
+        <div class="absolute inset-x-0 bottom-0 h-[33%] pointer-events-none" id="bubble-cycle-container" aria-hidden="true">
+          <div class="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-transparent to-white/0 pointer-events-none z-10"></div>
+
+          <!-- GRUPO 1: IA — pré-atendimento -->
+          <div data-bubble-group data-active class="absolute inset-0 transition-opacity duration-500 flex flex-col justify-end gap-[6px] px-3 pb-3" style="opacity: 1;">
+            <div class="bubble-enter flex justify-end" style="--delay: 0.3s">
+              <div class="bg-[#DCF8C6]/95 backdrop-blur-sm rounded-2xl rounded-tr-sm shadow-md px-3 py-2 max-w-[80%]">
+                <p class="text-[11px] text-slate-800 leading-snug">Oi! Vi o Instagram de vocês e queria saber mais 😊</p>
+              </div>
+            </div>
+            <div class="bubble-enter flex justify-start gap-1.5 items-end" style="--delay: 1.3s">
+              <div class="shrink-0 size-[22px] rounded-full bg-primary-100 flex items-center justify-center ring-1 ring-primary-200">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" class="text-primary-600"><path d="M12 2a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Zm-3 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+              </div>
+              <div class="bg-white/92 backdrop-blur-sm rounded-2xl rounded-tl-sm shadow-md px-3 py-2 max-w-[72%]">
+                <p class="text-[9px] font-bold text-primary-600 mb-0.5 tracking-wide uppercase">Assistente IA</p>
+                <p class="text-[11px] text-slate-800 leading-snug">Oii, que bom que chegou até a gente! 😄 Você já treina ou tá voltando do zero?</p>
+              </div>
+            </div>
+            <div class="bubble-enter flex justify-end" style="--delay: 2.3s">
+              <div class="bg-[#DCF8C6]/95 backdrop-blur-sm rounded-2xl rounded-tr-sm shadow-md px-3 py-2 max-w-[80%]">
+                <p class="text-[11px] text-slate-800 leading-snug">Quero voltar depois de um tempo parado 😅</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 2: IA passa pra Bia -->
+          <div data-bubble-group class="absolute inset-0 transition-opacity duration-500 flex flex-col justify-end gap-[6px] px-3 pb-3" style="opacity: 0;">
+            <div class="bubble-enter flex justify-start gap-1.5 items-end" style="--delay: 0.3s">
+              <div class="shrink-0 size-[22px] rounded-full bg-primary-100 flex items-center justify-center ring-1 ring-primary-200">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" class="text-primary-600"><path d="M12 2a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Zm-3 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+              </div>
+              <div class="bg-white/92 backdrop-blur-sm rounded-2xl rounded-tl-sm shadow-md px-3 py-2 max-w-[72%]">
+                <p class="text-[9px] font-bold text-primary-600 mb-0.5 tracking-wide uppercase">Assistente IA</p>
+                <p class="text-[11px] text-slate-800 leading-snug">Temos programa especial pra quem tá voltando 💪 Que horas prefere treinar?</p>
+              </div>
+            </div>
+            <div class="bubble-enter flex justify-end" style="--delay: 1.3s">
+              <div class="bg-[#DCF8C6]/95 backdrop-blur-sm rounded-2xl rounded-tr-sm shadow-md px-3 py-2 max-w-[80%]">
+                <p class="text-[11px] text-slate-800 leading-snug">Trabalho cedo, precisa ser bem de manhã</p>
+              </div>
+            </div>
+            <div class="bubble-enter flex justify-start gap-1.5 items-end" style="--delay: 2.3s">
+              <img src="/bia_avatar.png" alt="Bia" class="shrink-0 size-[22px] rounded-full object-cover shadow ring-1 ring-violet-200" />
+              <div class="bg-white/92 backdrop-blur-sm rounded-2xl rounded-tl-sm shadow-md px-3 py-2 max-w-[72%]">
+                <p class="text-[9px] font-bold text-violet-600 mb-0.5 tracking-wide uppercase">Bia · Consultora</p>
+                <p class="text-[11px] text-slate-800 leading-snug">Oi! Aqui é a Bia 😊 Abrimos às 5h! Tenho turma de funcional às 6h que é perfeita!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRUPO 3: Bia fecha -->
+          <div data-bubble-group class="absolute inset-0 transition-opacity duration-500 flex flex-col justify-end gap-[6px] px-3 pb-3" style="opacity: 0;">
+            <div class="bubble-enter flex justify-end" style="--delay: 0.3s">
+              <div class="bg-[#DCF8C6]/95 backdrop-blur-sm rounded-2xl rounded-tr-sm shadow-md px-3 py-2 max-w-[80%]">
+                <p class="text-[11px] text-slate-800 leading-snug">Tem personal também? 🏋️</p>
+              </div>
+            </div>
+            <div class="bubble-enter flex justify-start gap-1.5 items-end" style="--delay: 1.3s">
+              <img src="/bia_avatar.png" alt="Bia" class="shrink-0 size-[22px] rounded-full object-cover shadow ring-1 ring-violet-200" />
+              <div class="bg-white/92 backdrop-blur-sm rounded-2xl rounded-tl-sm shadow-md px-3 py-2 max-w-[72%]">
+                <p class="text-[9px] font-bold text-violet-600 mb-0.5 tracking-wide uppercase">Bia · Consultora</p>
+                <p class="text-[11px] text-slate-800 leading-snug">Tem! 🏆 A partir de R$ 89/mês. Posso reservar uma aula experimental gratuita pra você?</p>
+              </div>
+            </div>
+            <div class="bubble-enter flex justify-end" style="--delay: 2.3s">
+              <div class="bg-[#DCF8C6]/95 backdrop-blur-sm rounded-2xl rounded-tr-sm shadow-md px-3 py-2 max-w-[80%]">
+                <p class="text-[11px] text-slate-800 leading-snug">Quero sim! Me manda o link 🙌</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACKUP DO CELULAR ANTIGO (Oculto) -->
+    <div class="hidden" id="backup-celular" aria-hidden="true">
+      <!-- Coluna direita: iPhone realista com 3 conversas cyclical -->
+      <div class="relative animate-[fadeUp_0.8s_ease-out_0.15s_both]">
+      <div class="relative mx-auto" style="max-width: 320px;">
+
+        <!-- Siri-style orb: blobs azul Kora animados ATRÁS do phone.
+             Puro CSS (transform + blur), GPU-accelerated, zero JS.
+             -inset-24 estende o container 96px pra todos os lados pros
+             blobs vazarem atrás do phone. pointer-events-none não interfere. -->
+        <div class="absolute -inset-24 pointer-events-none overflow-visible" aria-hidden="true">
+          <div
+            class="siri-blob absolute size-72 rounded-full"
+            style="top: 4%; left: -8%; background: #004add; filter: blur(70px); opacity: 0.55; animation: siriDrift1 14s ease-in-out infinite;"
+          ></div>
+          <div
+            class="siri-blob absolute size-64 rounded-full"
+            style="top: 32%; right: -12%; background: #5e85ff; filter: blur(65px); opacity: 0.6; animation: siriDrift2 18s ease-in-out infinite;"
+          ></div>
+          <div
+            class="siri-blob absolute size-72 rounded-full"
+            style="bottom: 2%; left: 18%; background: #a78bfa; filter: blur(80px); opacity: 0.45; animation: siriDrift3 22s ease-in-out infinite;"
+          ></div>
+        </div>
+
+        <!-- Botões laterais -->
+        <div class="absolute -left-[2px] top-[78px]  w-[3px] h-7  bg-slate-700 rounded-l-sm shadow-inner z-10"></div>
+        <div class="absolute -left-[2px] top-[130px] w-[3px] h-12 bg-slate-700 rounded-l-sm shadow-inner z-10"></div>
+        <div class="absolute -left-[2px] top-[185px] w-[3px] h-12 bg-slate-700 rounded-l-sm shadow-inner z-10"></div>
+        <div class="absolute -right-[2px] top-[125px] w-[3px] h-20 bg-slate-700 rounded-r-sm shadow-inner z-10"></div>
+
+        <!-- Frame externo titânio -->
+        <div class="relative bg-gradient-to-br from-slate-700 via-slate-800 to-slate-950 rounded-[2.75rem] p-[3px] shadow-[0_30px_70px_-15px_rgba(15,23,42,0.45)]">
+
+          <!-- Bezel preto -->
+          <div class="relative bg-slate-950 rounded-[2.6rem] p-[7px]">
+
+            <!-- Tela -->
+            <div class="relative bg-[#E5DDD5] rounded-[2.15rem] overflow-hidden" style="aspect-ratio: 9 / 19.5;">
+
+              <!-- WhatsApp chrome verde (avatar + nome dinâmicos via JS) -->
+              <div class="absolute top-0 inset-x-0 z-10" style="height: 92px;">
+                <div class="absolute inset-0 bg-[#075E54]"></div>
+                <div class="absolute bottom-0 inset-x-0 px-3 pb-2.5 flex items-center gap-2.5 text-white">
+                  <svg width="11" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="opacity-90">
+                    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <!-- Avatar dinâmico (atualizado pelo script) -->
+                  <div
+                    id="hero-conv-avatar"
+                    class="size-8 rounded-full shrink-0 flex items-center justify-center font-bold text-xs text-white transition-colors duration-300"
+                    style={`background: ${FIRST.color};`}
+                  >{FIRST.initial}</div>
+                  <div class="flex-1 min-w-0">
+                    <!-- Nome dinâmico (atualizado pelo script) -->
+                    <p id="hero-conv-name" class="text-[13px] font-semibold truncate leading-tight">{FIRST.business}</p>
+                    <p class="text-[10px] opacity-80 leading-tight mt-0.5">online</p>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="opacity-85"><path d="M20 4h-3.17l-1.84-2H9.01L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5Z"/></svg>
+                  <svg width="3" height="14" viewBox="0 0 4 16" fill="currentColor" class="opacity-85"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg>
+                </div>
+              </div>
+
+              <!-- Dynamic Island -->
+              <div class="absolute top-[7px] left-1/2 -translate-x-1/2 z-30 bg-black rounded-full" style="width: 95px; height: 26px;"></div>
+
+              <!-- Status bar (sobre o chrome verde) -->
+              <div class="absolute top-0 inset-x-0 z-20 flex items-center justify-between text-white text-[12px] font-semibold pointer-events-none" style="height: 36px; padding: 12px 22px 0;">
+                <span class="tabular-nums">14:22</span>
+                <div class="flex items-center gap-[5px]">
+                  <svg width="17" height="10" viewBox="0 0 17 10" fill="currentColor" aria-hidden="true">
+                    <rect x="0"   y="6" width="3" height="4"  rx="0.5"/>
+                    <rect x="4.5" y="4" width="3" height="6"  rx="0.5"/>
+                    <rect x="9"   y="2" width="3" height="8"  rx="0.5"/>
+                    <rect x="13.5" y="0" width="3" height="10" rx="0.5"/>
+                  </svg>
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" aria-hidden="true">
+                    <path d="M7.5 11l-2-2a2.83 2.83 0 0 1 4 0l-2 2z"/>
+                    <path d="M3.5 7l1.4 1.4a3.7 3.7 0 0 1 5.2 0L11.5 7c-2.2-2.2-5.8-2.2-8 0z" opacity="0.95"/>
+                    <path d="M0.5 4l1.4 1.4a8 8 0 0 1 11.2 0L14.5 4c-3.9-3.9-10.1-3.9-14 0z" opacity="0.9"/>
+                  </svg>
+                  <svg width="25" height="11" viewBox="0 0 25 11" fill="none" aria-hidden="true">
+                    <rect x="0.5" y="0.5" width="21" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.6"/>
+                    <rect x="2" y="2" width="16" height="7" rx="1" fill="currentColor"/>
+                    <rect x="22.5" y="3.5" width="1.5" height="4" rx="0.6" fill="currentColor" opacity="0.7"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Conversas cyclical (3 containers empilhados; só [data-active] visível) -->
+              {CONVERSATIONS.map((conv, ci) => (
+                <div
+                  data-conv
+                  data-active={ci === 0 ? "" : null}
+                  class="absolute inset-x-0 bottom-[18px] px-2.5 py-3 space-y-2 overflow-hidden transition-opacity duration-500"
+                  style={`top: 92px; opacity: ${ci === 0 ? 1 : 0};`}
+                >
+                  {conv.messages.map((msg) => (
+                    msg.image ? (
+                      <div class={`flex ${msg.side === "in" ? "justify-start" : "justify-end"}`} data-msg style={`--delay: ${msg.delay}s`}>
+                        <div class={`max-w-[78%] ${msg.side === "in" ? "bg-white rounded-tl-sm" : "bg-[#DCF8C6] rounded-tr-sm"} rounded-lg p-1 shadow-sm`}>
+                          <div class={`aspect-square w-28 bg-gradient-to-br ${msg.image.bg} rounded flex items-center justify-center`}>
+                            <span class="text-2xl">{msg.image.emoji}</span>
+                          </div>
+                          <p class="text-[9px] text-slate-400 text-right mt-0.5 pr-1">{msg.time} ✓✓</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div class={`flex ${msg.side === "in" ? "justify-start" : "justify-end"}`} data-msg style={`--delay: ${msg.delay}s`}>
+                        <div class={`${msg.side === "in" ? "max-w-[75%] bg-white rounded-tl-sm" : "max-w-[80%] bg-[#DCF8C6] rounded-tr-sm"} rounded-lg px-2.5 py-1.5 shadow-sm`}>
+                          {msg.who && (
+                            <p class={`text-[9px] font-semibold ${msg.whoColor} mb-0.5 flex items-center gap-1`}>
+                              {msg.whoIcon === "bot" ? (
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 0 1 2 2v2h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Zm-3 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+                              ) : (
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>
+                              )}
+                              {msg.who}
+                            </p>
+                          )}
+                          <p class="text-[12px] text-slate-800 leading-snug">{msg.text}</p>
+                          <p class="text-[9px] text-slate-400 text-right mt-0.5">{msg.time}{msg.side === "out" ? " ✓✓" : ""}</p>
+                        </div>
+                      </div>
+                    )
+                  ))}
+
+                  <!-- Typing indicator no final de cada conv (delay = última msg + 0.4s) -->
+                  <div class="flex justify-start" data-msg style={`--delay: ${conv.messages[conv.messages.length - 1].delay + 0.4}s`}>
+                    <div class="bg-white rounded-lg rounded-tl-sm px-2.5 py-2 shadow-sm">
+                      <div class="flex items-center gap-1">
+                        <span class="size-1.5 bg-slate-400 rounded-full animate-[pulseSoft_1s_ease-in-out_infinite]"></span>
+                        <span class="size-1.5 bg-slate-400 rounded-full animate-[pulseSoft_1s_ease-in-out_0.2s_infinite]"></span>
+                        <span class="size-1.5 bg-slate-400 rounded-full animate-[pulseSoft_1s_ease-in-out_0.4s_infinite]"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <!-- Home indicator -->
+              <div class="absolute bottom-[6px] left-1/2 -translate-x-1/2 w-[110px] h-[4px] bg-slate-900/70 rounded-full z-40"></div>
+
+              <!-- Reflexo sutil -->
+              <div class="absolute inset-0 pointer-events-none z-50 rounded-[2.15rem] bg-gradient-to-br from-white/[0.04] via-transparent to-transparent"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges flutuantes — fora do phone via right-full / left-full (verde = melhoria) -->
+        <div class="absolute right-full top-1/4 mr-3 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 animate-[fadeUp_0.6s_ease-out_1.5s_both] hidden xl:block">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Tempo de resposta</p>
+          <p class="text-2xl font-bold text-slate-900 tabular-nums">12<span class="text-sm font-medium text-slate-500">s</span></p>
+          <p class="text-[10px] text-emerald-600 font-medium mt-0.5">↓ 87% vs antes</p>
+        </div>
+
+        <div class="absolute left-full bottom-1/4 ml-3 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 animate-[fadeUp_0.6s_ease-out_1.8s_both] hidden xl:block">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Conversão</p>
+          <p class="text-2xl font-bold text-slate-900 tabular-nums">34<span class="text-sm font-medium text-slate-500">%</span></p>
+          <p class="text-[10px] text-emerald-600 font-medium mt-0.5">↑ 2,1× a média</p>
+        </div>
+      </div>
+    </div>
+    <!-- Fim do BACKUP -->
+    </div>
+  </div>
+</section>
+
+<style>
+  /* CTA "Solicitar demonstração" — cápsula azul, degradê no corpo e borda
+     cônica que gira ao passar o mouse. */
+  @property --kora-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  .demo-cta {
+    position: relative;
+    z-index: 0;
+    border-radius: 9999px;
+    background: linear-gradient(115deg, #003db8 0%, #1a5bff 50%, #4f7cff 100%);
+    box-shadow: 0 6px 22px -6px rgba(0, 74, 221, 0.5);
+    transition: transform .25s ease, box-shadow .3s ease, background .4s ease;
+  }
+  .demo-cta:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(115deg, #0042c4 0%, #2f6bff 50%, #6f97ff 100%);
+    box-shadow: 0 12px 34px -8px rgba(0, 74, 221, 0.6);
+  }
+  .demo-cta::before {
+    content: "";
+    position: absolute;
+    inset: -2.5px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--kora-angle), #5e85ff, #9cbcff, #d6e6ff, #3a6dff, #5e85ff);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .demo-cta:hover::before {
+    opacity: 1;
+    animation: koraSpin 2.4s linear infinite;
+  }
+  @keyframes koraSpin { to { --kora-angle: 360deg; } }
+  @media (prefers-reduced-motion: reduce) {
+    .demo-cta:hover { transform: none; }
+    .demo-cta:hover::before { animation: none; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-delayed-1 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+  .animate-float-delayed-2 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: -4s;
+  }
+
+  /* Bubble entry animation */
+  [data-active] .bubble-enter {
+    animation: bubbleEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: var(--delay);
+  }
+  @keyframes bubbleEnter {
+    from { opacity: 0; transform: translateY(15px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  
+  .bubble-enter {
+    opacity: 0;
+  }
+
+  /* ── Hero rotating platform word ── */
+  .hero-rotate-outer {
+    /* altura = 1 linha; clipa o track que desliza */
+    height: 1.08em;
+    line-height: 1.08;
+  }
+  /* 6 itens: cada passo = 1/6 = 16.6667%
+     Pausa em cada palavra ~2.5s, troca rápida 0.4s → ciclo total ~18s */
+  @keyframes heroSlideUp {
+    0%          { transform: translateY(0); }
+    14%         { transform: translateY(0); }        /* pausa WhatsApp  */
+    16.6667%    { transform: translateY(-16.6667%); } /* → Instagram     */
+    30.6667%    { transform: translateY(-16.6667%); } /* pausa Instagram */
+    33.3333%    { transform: translateY(-33.3333%); } /* → Facebook      */
+    47.3333%    { transform: translateY(-33.3333%); } /* pausa Facebook  */
+    50%         { transform: translateY(-50%); }      /* → Telegram      */
+    64%         { transform: translateY(-50%); }      /* pausa Telegram  */
+    66.6667%    { transform: translateY(-66.6667%); } /* → Google        */
+    80.6667%    { transform: translateY(-66.6667%); } /* pausa Google    */
+    83.3333%    { transform: translateY(-83.3333%); } /* → WhatsApp(dup) */
+    100%        { transform: translateY(-83.3333%); } /* fim (reset sem jump) */
+  }
+  .hero-rotate-track {
+    animation: heroSlideUp 18s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+    will-change: transform;
+  }
+  .hero-rotate-item {
+    height: 1.08em;
+    line-height: 1.08;
+  }
+
+  /* ── Bubbles mobile: compacta tudo em telas pequenas ── */
+  @media (max-width: 480px) {
+    /* Overlay menor pra não cobrir demais a foto */
+    #bubble-cycle-container {
+      height: 36% !important;
+    }
+    /* Grupos: menos gap e padding interno */
+    #bubble-cycle-container [data-bubble-group] {
+      gap: 4px !important;
+      padding: 0 8px 8px !important;
+    }
+    /* Bolhas: padding menor, max-width menor — seleciona os divs de conteúdo */
+    #bubble-cycle-container [data-bubble-group] > div > div:last-child {
+      padding: 5px 10px !important;
+      max-width: 82% !important;
+    }
+    /* Texto das mensagens menor */
+    #bubble-cycle-container p.leading-snug {
+      font-size: 9.5px !important;
+      line-height: 1.35 !important;
+    }
+    /* Label "Assistente IA" / "Bia" */
+    #bubble-cycle-container p.uppercase {
+      font-size: 7.5px !important;
+      margin-bottom: 1px !important;
+    }
+    /* Avatar menor */
+    #bubble-cycle-container img.rounded-full,
+    #bubble-cycle-container div.rounded-full {
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+    }
+    /* SVG dentro do avatar IA */
+    #bubble-cycle-container div.rounded-full svg {
+      width: 9px !important;
+      height: 9px !important;
+    }
+    /* Gap entre avatar e bubble */
+    #bubble-cycle-container .gap-1\.5 {
+      gap: 5px !important;
+    }
+  }
+</style>
+
+<script define:vars={{ HEADER_DATA }}>
+  // Cycle conversations do backup a cada 8s.
+  const convElements = Array.from(document.querySelectorAll("[data-conv]"))
+  const avatarEl    = document.getElementById("hero-conv-avatar")
+  const nameEl      = document.getElementById("hero-conv-name")
+
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+  if (convElements.length > 1 && avatarEl && nameEl && !prefersReducedMotion) {
+    let current = 0
+
+    function cycleNext() {
+      const currentEl = convElements[current]
+      const nextIndex = (current + 1) % HEADER_DATA.length
+      const nextEl    = convElements[nextIndex]
+
+      currentEl.style.opacity = "0"
+      window.setTimeout(() => {
+        currentEl.removeAttribute("data-active")
+        const data = HEADER_DATA[nextIndex]
+        avatarEl.style.background = data.color
+        avatarEl.textContent      = data.initial
+        nameEl.textContent        = data.business
+        nextEl.setAttribute("data-active", "")
+        nextEl.style.opacity = "1"
+        current = nextIndex
+      }, 400)
+    }
+    window.setInterval(cycleNext, 8000)
+  }
+</script>
+
+<script>
+  // Ciclo das bubbles da nova Option 2 a cada 7s.
+  const prefersReducedMotionNew = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!prefersReducedMotionNew) {
+    const bubbleGroups = Array.from(document.querySelectorAll<HTMLElement>("[data-bubble-group]"));
+    if (bubbleGroups.length > 0) {
+      let currentBubble = 0;
+      setInterval(() => {
+        const currentEl = bubbleGroups[currentBubble];
+        const nextIndex = (currentBubble + 1) % bubbleGroups.length;
+        const nextEl = bubbleGroups[nextIndex];
+
+        currentEl.style.opacity = "0";
+        setTimeout(() => {
+          currentEl.removeAttribute("data-active");
+          nextEl.setAttribute("data-active", "");
+          nextEl.style.opacity = "1";
+          currentBubble = nextIndex;
+        }, 500);
+      }, 7000);
+    }
+  }
+</script>
