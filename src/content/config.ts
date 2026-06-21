@@ -9,6 +9,7 @@ const blogCollection = defineCollection({
     author: z.string().default('Equipe Kora'),
     category: z.string().default('Geral'),
     image: z.string().optional(),
+    ogImage: z.string().optional(), // capa do link (OG) — use JPG/PNG p/ máxima compatibilidade (WhatsApp)
     tags: z.array(z.string()).default([]),
   }),
 });

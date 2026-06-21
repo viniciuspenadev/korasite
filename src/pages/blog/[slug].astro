@@ -27,7 +27,7 @@ const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
 <Layout
   title={`${post.data.title} | Kora Blog`}
   description={post.data.description}
-  ogImage={post.data.image}
+  ogImage={post.data.ogImage ?? post.data.image}
   ogType="article"
 >
   <Nav />
